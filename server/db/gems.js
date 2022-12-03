@@ -2,7 +2,6 @@ import Gems from "../models/gems.js";
 import { endOfDay, startOfDay } from "date-fns";
 
 /* CREATE */
-
 //save gems to db
 const gemsCreate = async (data) => {
   const gems = new Gems({
@@ -19,7 +18,6 @@ const gemsCreate = async (data) => {
 };
 
 /* READ */
-
 //get all gems of the last n days timespan
 const getSavedGemsDaysAgo = async (numberOfDays) => {
   const today = new Date();
