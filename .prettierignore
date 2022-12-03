@@ -1,0 +1,8 @@
+# HTML files
+*.html
+
+# default
+**/.git
+**/.svn
+**/.hg
+**/node_modules
