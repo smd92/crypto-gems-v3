@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const createCGTrendingChart = (dataset) => {
   const css = fs.readFileSync(
-    path.normalize(__dirname + "/img_coingeckoTrending.css"),
+    path.normalize(__dirname + "/coingeckoTrending.css"),
     "utf8"
   );
 
@@ -77,7 +77,7 @@ const createCGTrendingChart = (dataset) => {
 
 const saveCGTrendingChart = async (chart) => {
   await nodeHtmlToImage({
-    output: "./server/img/coingeckoTrending.png",
+    output: "./server/public/assets/coingeckoTrending.png",
     html: chart,
     puppeteerArgs: { args: ["--no-sandbox"] },
   });

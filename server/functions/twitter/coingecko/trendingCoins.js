@@ -28,7 +28,7 @@ const tweetCoingeckoTrending = async (data) => {
 
     const client = createClient();
     const mediaId = await client.v1.uploadMedia(
-      "server/img/coingeckoTrending.png"
+      "server/public/assets/coingeckoTrending.png"
     );
     await client.v1.tweet(tweet, { media_ids: mediaId });
   } catch (err) {

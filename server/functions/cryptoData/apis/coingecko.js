@@ -38,7 +38,12 @@ async function getCoinByID(id, settings = {}) {
 async function getTrendingCoins() {
   try {
     const response = await axios.get(
-      "https://api.coingecko.com/api/v3/search/trending"
+      "https://api.coingecko.com/api/v3/search/trending",
+      {
+        headers: {
+          "Accept-Encoding": "application/json",
+        },
+      }
     );
     return response.data;
   } catch (err) {

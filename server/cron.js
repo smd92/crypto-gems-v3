@@ -13,7 +13,7 @@ import {
 import { tweetCoingeckoTrending } from "./functions/twitter/coingecko/trendingCoins.js";
 import { tweetLunarCrushCoinfOfTheDay } from "./functions/twitter/lunarcrush/coinOfTheDay.js";
 
-schedule("54 12 * * *", async function cron_trendingCoins() {
+schedule("0 8 * * *", async function cron_trendingCoins() {
   try {
     //get data
     const data = await getTrendingCoins();
@@ -48,7 +48,6 @@ schedule("0 9 * * *", async function cron_lunarCrushCoinfOfTheDay() {
         `LunarCrush Error: ${response.status} ${response.statusText}`
       );
     const coinOfTheDay = response.data;
-    console.log(coinOfTheDay);
     //tweet data
     await tweetLunarCrushCoinfOfTheDay(coinOfTheDay);
     console.log("successfully tweeted lunarcrush coin of the day");
