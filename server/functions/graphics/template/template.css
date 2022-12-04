@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=Open+Sans:wght@800&display=swap");
+
+body {
+  width: 1600px;
+  height: 900px;
+  background-color: #282c34;
+  color: #00ba7c;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  text-shadow: 5px 5px 5px #222;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 70px 1fr 70px;
+  grid-template-rows: 15px 200px 520px 150px 15px;
+  grid-template-areas:
+    ". . ."
+    ". header ."
+    ". main ."
+    " .footer ."
+    ". . .";
+}
+
+.header {
+  grid-area: header;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-template-rows: 200px;
+  grid-template-areas: "title gemCrawlerLogo";
+}
+
+.title {
+  grid-area: title;
+  font-size: 85px;
+  font-weight: bold;
+  align-self: center;
+}
+
+.gemCrawler-logo {
+  height: 150px;
+  width: auto;
+  grid-area: gemCrawlerLogo;
+  justify-self: end;
+  align-self: center;
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.main {
+  grid-area: main;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+/*
+.footer {
+  grid-area: footer;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 200px;
+  grid-template-areas: "footer-optional twitterHandle";
+  font-size: 30px;
+  font-weight: bold;
+  align-items: center;
+}
+
+.footer-optional {
+  grid-area: footer-optional;
+  align-self: center;
+}
+
+.twitterHandle {
+  grid-area: twitterHandle;
+  align-self: center;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.twitter-logo {
+  height: 40px;
+  width: auto;
+} */
+
+.footer {
+  grid-area: footer;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 30px;
+  font-weight: bold;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.footer-optional {
+  display: flex;
+  align-items: center;
+  height: 50%;
+}
+
+.twitterHandle {
+  grid-area: twitterHandle;
+  display: flex;
+  align-items: center;
+  height: 50%;
+}
+
+.twitter-logo {
+  height: 40px;
+  width: auto;
+}

@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
+import "./cron.js";
 /* IMPORT ROUTES */
 import authRoutes from "./routes/auth.js";
 
@@ -22,7 +23,9 @@ app.use(express.static(path.resolve(__dirname, "../client/build")));
 dotenv.config();
 
 app.use(express.json());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));

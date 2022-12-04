@@ -1,4 +1,4 @@
-import { createClient, createTestClient } from "./twitter_config.js";
+import { createClient, createTestClient } from "../config.js";
 
 const _buildTweet = (coindata) => {
   const sirenEmoji = String.fromCodePoint(0x1f6a8); //code point from https://emojipedia.org/de/emoji/
@@ -25,7 +25,7 @@ const _buildTweet = (coindata) => {
   return tweet;
 };
 
-export async function tweet_lunarCrush_CoinOfTheDay(coinOfTheDay) {
+export async function tweetLunarCrushCoinfOfTheDay(coinOfTheDay) {
   try {
     const client = createClient();
     const tweet = _buildTweet(coinOfTheDay);

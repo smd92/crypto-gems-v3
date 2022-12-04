@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getLunarCrushData = async (url) => {
+export const getLunarCrushData = async (url) => {
   try {
     const response = await axios.get(url, {
       headers: {
@@ -12,5 +12,3 @@ const getLunarCrushData = async (url) => {
     console.log(err.message);
   }
 };
-
-export default getLunarCrushData;
