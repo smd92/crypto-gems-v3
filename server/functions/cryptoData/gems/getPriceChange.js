@@ -1,4 +1,4 @@
-import { getCoinByID } from "./coingecko.js";
+import { getCoinByID } from "./coingecko.js.js";
 
 const getPriceChange24h = async (coin) => {
   try {
