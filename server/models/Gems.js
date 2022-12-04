@@ -8,6 +8,7 @@ const GemsSchema = new mongoose.Schema(
     unmatched: { type: Array, required: true },
   },
   {
+    collection: "gems",
     timestamps: true,
   }
 );

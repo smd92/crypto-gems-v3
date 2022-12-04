@@ -5,6 +5,7 @@ const CoingeckoTrending24hSchema = new mongoose.Schema(
     coins: { type: Array, required: true },
   },
   {
+    collection: "coingeckoTrending24h",
     timestamps: true,
   }
 );

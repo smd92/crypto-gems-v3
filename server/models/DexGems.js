@@ -8,6 +8,7 @@ const DexGemsSchema = new mongoose.Schema(
     dex: { type: String, required: true },
   },
   {
+    collection: "dexGems",
     timestamps: true,
   }
 );

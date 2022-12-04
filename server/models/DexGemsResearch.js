@@ -6,6 +6,7 @@ const DexGemsResearch = new mongoose.Schema(
     isTweeted: { type: Boolean, required: true },
   },
   {
+    collection: "dexGemsResearch",
     timestamps: true,
   }
 );
