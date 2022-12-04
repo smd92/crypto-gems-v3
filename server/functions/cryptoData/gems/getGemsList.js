@@ -1,11 +1,11 @@
-import { listingsLatest } from "./cmc.js";
-import { getCoinList, getCoinByID } from "./coingecko.js";
-import { getIDsFromCGList, getUnmatchedCoins } from "./filterHelpers.js";
+import { listingsLatest } from "../apis/cmc.js";
+import { getCoinList, getCoinByID } from "../apis/coingecko.js";
+import { getIDsFromCGList, getUnmatchedCoins } from "../gems/filterHelpers.js";
 import {
   filterByMarketCap,
   filterByVolume,
   filterByVolumeTrustScore,
-} from "./filters.js";
+} from "../gems/gemsFetchFilters.js";
 
 const _trimGemData = (filteredByVolumeTrustScore) => {
   //remove null
@@ -138,7 +138,7 @@ const getGemsList = async (minMarketCap, maxMarketCap) => {
       maxMarketCap,
     };
   } catch (err) {
-    throw new Error(err.message);
+    console.log(err.message);
   }
 };
 

@@ -12,12 +12,13 @@ async function listingsLatest() {
         },
         headers: {
           "X-CMC_PRO_API_KEY": process.env.API_KEY_CMC,
+          "Accept-Encoding": "application/json",
         },
       }
     );
     return response.data.data;
   } catch (err) {
-    throw new Error(err.message);
+    console.log(err.message);
   }
 }
 

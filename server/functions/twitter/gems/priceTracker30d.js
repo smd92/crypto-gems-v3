@@ -1,5 +1,5 @@
-import { createClient, createTestClient } from "./twitter_config.js";
-import { threadHelper } from "./twitter_helperFunctions.js";
+import { createClient, createTestClient } from "../config.js";
+import { threadHelper } from "../helperFunctions.js";
 
 const _createTweetHeader = (numberOfGems) => {
   const lightbulbEmoji = String.fromCodePoint(0x1f4a1); //code point from https://emojipedia.org/de/emoji/

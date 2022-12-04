@@ -3,7 +3,7 @@ import {
   getPriceChange7d,
   getPriceChange30d,
   getPriceChange60d,
-} from "./priceChange.js";
+} from "./getPriceChange.js";
 
 const sortByPriceChange = (coins, priceChangeKey) => {
   //sort by price change percentage from highest to lowest

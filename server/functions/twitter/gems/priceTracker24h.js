@@ -1,5 +1,5 @@
-import { createClient, createTestClient } from "./twitter_config.js";
-import { threadHelper } from "./twitter_helperFunctions.js";
+import { createClient, createTestClient } from "../config.js";
+import { threadHelper } from "../helperFunctions.js";
 
 const _createTweetHeader = () => {
   const sirenEmoji = String.fromCodePoint(0x1f6a8); //code point from https://emojipedia.org/de/emoji/
@@ -51,7 +51,7 @@ const tweetGainers24h = async (data) => {
     const thread = _createThread(data);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("twitter_gainers24h.js: " + err.message);
+    console.log("priceTracker24h.js: " + err.message);
   }
 };
 

@@ -1,4 +1,4 @@
-import { createClient } from "./twitter_config.js";
+import { createClient, createTestClient } from "../config.js";
 
 const _buildTweet = (number) => {
   const smilingEmoji = String.fromCodePoint(0x1f60a); //code point from https://emojipedia.org/de/emoji/

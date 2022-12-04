@@ -1,5 +1,5 @@
-import { createClient } from "./twitter_config.js";
-import { threadHelper } from "./twitter_helperFunctions.js";
+import { createClient, createTestClient } from "../config.js";
+import { threadHelper } from "../helperFunctions.js";
 
 const _createTweetHeader = () => {
   const gemEmoji = String.fromCodePoint(0x1f48e);

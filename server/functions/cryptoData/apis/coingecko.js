@@ -8,7 +8,7 @@ async function getCoinList() {
     const response = await CoinGeckoClient.coins.list();
     return response;
   } catch (err) {
-    throw new Error(err.message);
+    console.log(err.message);
   }
 }
 
@@ -30,7 +30,7 @@ async function getCoinByID(id, settings = {}) {
     const response = await CoinGeckoClient.coins.fetch(id, settings);
     return response;
   } catch (err) {
-    throw new Error(err.message);
+    console.log(err.message);
   }
 }
 
@@ -47,7 +47,7 @@ async function getTrendingCoins() {
     );
     return response.data;
   } catch (err) {
-    throw new Error(err.message);
+    console.log(err.message);
   }
 }
 

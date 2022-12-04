@@ -1,64 +1,64 @@
 body {
-    color: #ff007b;
-  }
-  
-  .main {
-    display: grid;
-    grid-template-rows: 50px 300px 100px 50px;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "."
-      "box-infoText"
-      "hit-follow"
-      ".";
-    align-items: center;
-  }
-  
-  .title {
-    font-size: 65px;
-  }
-  
-  .box-infoText {
-    grid-area: box-infoText;
-    display: grid;
-    grid-template-rows: 100px 100px 100px;
-    font-size: 55px;
-  }
-  
-  .hit-follow {
-    grid-area: hit-follow;
-    font-size: 40px;
-    justify-self: center;
-    align-self: start;
-    margin-top: 70px;
-    border: 0.2rem solid #fff;
-    border-radius: 2rem;
-    padding: 0.4em;
-    box-shadow: 0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem #ff007b,
-      0 0 0.8rem #ff007b, 0 0 2.8rem #ff007b, inset 0 0 1.3rem #ff007b;
-    width: 500px;
-    text-align: center;
-  }
-  
-  .info-item {
-    display: flex;
-    align-items: center;
-  }
-  
-  .checkmark-symbol {
-    height: 90px;
-    width: auto;
-    -webkit-filter: drop-shadow(5px 5px 5px #222);
-    filter: drop-shadow(5px 5px 5px #222);
-  }
-  
-  .info-text {
-    margin-left: 20px;
-  }
-  
-  .logo-uniswap,
-  .logo-etherscan {
-    height: 60px;
-    width: auto;
-    margin-left: 20px;
-  }
+  color: #ff007b;
+}
+
+.main {
+  display: grid;
+  grid-template-rows: 50px 300px 100px 50px;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "."
+    "box-infoText"
+    "hit-follow"
+    ".";
+  align-items: center;
+}
+
+.title {
+  font-size: 65px;
+}
+
+.box-infoText {
+  grid-area: box-infoText;
+  display: grid;
+  grid-template-rows: 100px 100px 100px;
+  font-size: 55px;
+}
+
+.hit-follow {
+  grid-area: hit-follow;
+  font-size: 40px;
+  justify-self: center;
+  align-self: start;
+  margin-top: 70px;
+  border: 0.2rem solid #fff;
+  border-radius: 2rem;
+  padding: 0.4em;
+  box-shadow: 0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem #ff007b,
+    0 0 0.8rem #ff007b, 0 0 2.8rem #ff007b, inset 0 0 1.3rem #ff007b;
+  width: 500px;
+  text-align: center;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.checkmark-symbol {
+  height: 90px;
+  width: auto;
+  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
+.info-text {
+  margin-left: 20px;
+}
+
+.logo-uniswap,
+.logo-etherscan {
+  height: 60px;
+  width: auto;
+  margin-left: 20px;
+}
