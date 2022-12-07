@@ -63,7 +63,7 @@ const tweetSupplyRatio = async (data, numberOfGems) => {
     const thread = _createThread(data, numberOfGems);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("twitter_supplyRatio.js: " + err.message);
+    console.log("supplyRatio.js: " + err.message);
   }
 };
 

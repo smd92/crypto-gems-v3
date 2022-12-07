@@ -43,14 +43,14 @@ const _createThread = (data) => {
   return threadArr;
 };
 
-const tweetGemList = async (data) => {
+const tweetFullList = async (data) => {
   try {
     const client = createClient();
     const thread = _createThread(data);
 
     //add info graphic to first tweet of thread
     const mediaId = await client.v1.uploadMedia(
-      "server/img/GemCrawler_gemInfo_1600x900.png"
+      "server/public/assets/GemCrawler_gemInfo_1600x900.png"
     );
     const firstTweetOfThread = thread[0];
     thread[0] = {
@@ -64,4 +64,4 @@ const tweetGemList = async (data) => {
   }
 };
 
-export { tweetGemList };
+export { tweetFullList };

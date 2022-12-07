@@ -33,6 +33,6 @@ export async function tweetNumberOfGems(number) {
     const tweet = _buildTweet(number);
     await client.v1.tweet(tweet);
   } catch (err) {
-    console.log("twitter_numberOfGems.js: " + err.message);
+    console.log("teaser.js: " + err.message);
   }
 }

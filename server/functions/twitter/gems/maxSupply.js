@@ -45,14 +45,14 @@ const _createThread = (data) => {
   return threadArr;
 };
 
-const tweetGemsMaxSupply = async (data) => {
+const tweetMaxSupply = async (data) => {
   try {
     const client = createClient();
     const thread = _createThread(data);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("twitter_maxSupply.js: " + err.message);
+    console.log("maxSupply.js: " + err.message);
   }
 };
 
-export { tweetGemsMaxSupply };
+export { tweetMaxSupply };

@@ -51,14 +51,14 @@ const _createThread = (data, numberOfGems) => {
   return threadArr;
 };
 
-const tweetTop5_24h = async (data, numberOfGems) => {
+const tweetPriceGainers24hTop5 = async (data, numberOfGems) => {
   try {
     const client = createClient();
     const thread = _createThread(data, numberOfGems);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("twitter_top5_24h.js: " + err.message);
+    console.log("priceGainers24hTop5.js: " + err.message);
   }
 };
 
-export { tweetTop5_24h };
+export { tweetPriceGainers24hTop5 };
