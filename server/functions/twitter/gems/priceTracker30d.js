@@ -44,14 +44,14 @@ const _createThread = (data, numberOfGems) => {
   return threadArr;
 };
 
-const tweet_strongest30d = async (data, numberOfGems) => {
+const tweetGainers30d = async (data, numberOfGems) => {
   try {
     const client = createClient();
     const thread = _createThread(data, numberOfGems);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("twitter_strongest30d.js: " + err.message);
+    console.log("priceTracker30d.js: " + err.message);
   }
 };
 
-export { tweet_strongest30d };
+export { tweetGainers30d };

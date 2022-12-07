@@ -2,12 +2,15 @@ import { schedule } from "node-cron";
 /* CRYPTO DATA */
 import { getTrendingCoins } from "./functions/cryptoData/apis/coingecko.js";
 import { getLunarCrushData } from "./functions/cryptoData/apis/lunarCrush.js";
-import { getPerformance24h } from "./functions/cryptoData/gems/getPricePerformance.js";
+import {
+  getPerformance24h,
+  getPerformance30d,
+} from "./functions/cryptoData/gems/getPricePerformance.js";
 import { filterByPriceChange } from "./functions/cryptoData/gems/filterByMetrics.js";
 import { getGemsList } from "./functions/cryptoData/gems/getGemsList.js";
 /* DB */
 import { coingeckoTrending24hCreate } from "./db/coingeckoTrending24h.js";
-import { getSavedGemsDaysAgo, gemsCreate } from "./db/gems.js";
+import { getSavedGemsDaysAgo, gemsCreate, getGemsByDate } from "./db/gems.js";
 /* GRAPHICS */
 import {
   createCGTrendingChart,
@@ -18,6 +21,7 @@ import { tweetCoingeckoTrending } from "./functions/twitter/coingecko/trendingCo
 import { tweetLunarCrushCoinfOfTheDay } from "./functions/twitter/lunarcrush/coinOfTheDay.js";
 import { tweetLunarCrushNftOfTheDay } from "./functions/twitter/lunarcrush/nftOfTheDay.js";
 import { tweetGainers24h } from "./functions/twitter/gems/priceTracker24h.js";
+import { tweetGainers30d } from "./functions/twitter/gems/priceTracker30d.js";
 
 schedule("0 8 * * *", async function cron_coingeckoTrending() {
   try {
@@ -81,7 +85,7 @@ schedule("30 9 * * *", async function cron_lunarCrushNftOfTheDay() {
   }
 });
 
-schedule("0 10 * * *", async function cron_gainers24h() {
+schedule("0 10 * * *", async function cron_gems_gainers24h() {
   try {
     //get yesterday's gems
     const data = await getSavedGemsDaysAgo(1);
@@ -120,13 +124,66 @@ schedule("0 10 * * *", async function cron_gainers24h() {
   }
 });
 
-schedule("0 11 * * *", async function cron_gemsList_MicroCaps() {
+schedule("0 11 * * *", async function cron_gems_ultraLowCaps() {
   try {
     //get data
     const data = await getGemsList(1_000_000, 5_000_000);
     //save data to db
     await gemsCreate(data);
-    console.log("microcaps done");
+    console.log("ultra-lowcaps done");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+schedule("30 11 * * *", async function cron_gems_lowCaps() {
+  try {
+    //get data
+    const data = await getGemsList(5_000_000, 10_000_000);
+    //save data to db
+    await gemsCreate(data);
+    console.log("lowcaps done");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+schedule("0 12 * * *", async function cron_gems_gainers30d() {
+  try {
+    //get date of 30 days ago
+    const today = new Date();
+    const thirtyDaysAgo = new Date(new Date().setDate(today.getDate() - 30));
+    //get gems of 30 days ago
+    const data = await getGemsByDate(thirtyDaysAgo);
+    const gems = [];
+    data.forEach((document) => {
+      //exclude ultra-low caps
+      if (document.minMarketCap >= 1_000_000)
+        document.gems.forEach((gem) => gems.push(gem));
+    });
+    //get strongest performers of last 30d
+    const priceChangeUpdated = await getPerformance30d(gems);
+    const gainers30d = filterByPriceChange(
+      priceChangeUpdated,
+      "price_change_percentage_30d",
+      20
+    );
+    //stop process if there are no gainers
+    if (gainers30d.length === 0) return "no gems gainers 30d found";
+    //format data for tweet
+    const gainers30dForTweet = gainers30d.map((gem) => {
+      return {
+        symbol: gem.symbol,
+        name: gem.name,
+        //round to two decimals
+        price_change_percentage_30d:
+          Math.round((gem.price_change_percentage_30d + Number.EPSILON) * 100) /
+          100,
+      };
+    });
+    //tweet data
+    await tweetGainers30d(gainers30dForTweet, gems.length);
+    console.log("successfully tweeted gainers30d");
   } catch (err) {
     console.log(err.message);
   }
