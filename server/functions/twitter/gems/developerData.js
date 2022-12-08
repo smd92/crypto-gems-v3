@@ -53,7 +53,7 @@ const tweetDeveloperData = async (data) => {
     const thread = _createThread(data);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log(err.message);
+    console.log("developerData.js: " + err.message);
   }
 };
 

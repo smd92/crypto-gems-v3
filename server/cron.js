@@ -11,6 +11,7 @@ import {
   filterByPriceChange,
   filterBySupplyRatio,
   filterByMaxSupply,
+  filterByDeveloperScore,
 } from "./functions/cryptoData/gems/filterByMetrics.js";
 import { getGemsList } from "./functions/cryptoData/gems/getGemsList.js";
 /* DB */
@@ -32,6 +33,7 @@ import { tweetFullList } from "./functions/twitter/gems/fullList.js";
 import { tweetSupplyRatio } from "./functions/twitter/gems/supplyRatio.js";
 import { tweetPriceGainers24hTop5 } from "./functions/twitter/gems/priceGainers24hTop5.js";
 import { tweetMaxSupply } from "./functions/twitter/gems/maxSupply.js";
+import {tweetDeveloperData} from "./functions/twitter/gems/developerData.js"
 
 schedule("0 8 * * *", async function cron_coingeckoTrending() {
   try {
@@ -345,6 +347,180 @@ schedule("30 15 * * *", async function cron_gems_maxSupply() {
     //tweet data
     await tweetMaxSupply(gemsForTweet);
     console.log("successfully tweeted max supply gems");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+schedule("30 16 * * *", async function cron_gems_developerData() {
+  try {
+    const today = new Date();
+    //get data
+    const data = await getGemsByDate(today);
+    const gems = [];
+    data.forEach((document) => {
+      //exclude ultra-low caps
+      if (document.minMarketCap >= 1_000_000)
+        document.gems.forEach((gem) => gems.push(gem));
+    });
+    //stop process if there are no gems
+    if (gems.length === 0) return;
+    //only keep gems with developer data
+    const filteredByDeveloperScore = filterByDeveloperScore(gems, 50);
+    if (filteredByDeveloperScore.length === 0) return;
+    //format data for tweet
+    const gemsForTweet = filteredByDeveloperScore.map((gem) => {
+      return {
+        symbol: gem.symbol,
+        name: gem.name,
+      };
+    });
+    //tweet
+    await tweetDeveloperData(gemsForTweet);
+    console.log("successfully tweeted developer data");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+//get uniswap data
+schedule("0 17 * * *", async function cron_getDataUniswapV2() {
+  try {
+    //get WETH price to calculate USD price of token0
+    const priceWETH = await getTokenPriceUSDV2(
+      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    );
+
+    //get 5000 latest pairs
+    const latestPairs = await getLatestPairsV2();
+    console.log(`Fetched ${latestPairs.length} latest pairs`);
+
+    //filter WETH pairs
+    const WETHpairs = latestPairs.filter((pair) => {
+      return pair.token1.id === "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
+    });
+    console.log(`filtered ${WETHpairs.length} WETH-Pairs`);
+
+    //get supply from Etherscan and map it to token0
+    const mappedSupplyFromEtherscan = [];
+    for (let i = 0; i < WETHpairs.length; i++) {
+      const response = await getTotalSupply(WETHpairs[i].token0.id);
+      if (response) {
+        if (response.status === "1" && response.message === "OK") {
+          //format supply by token decimals
+          const supply = response.result;
+          const tokenDecimals = Number(WETHpairs[i].token0.decimals);
+          const supplyFormatted = supply.slice(0, tokenDecimals * -1);
+          //add supply to token0 object
+          WETHpairs[i].token0.supplyEtherscan = supplyFormatted;
+          mappedSupplyFromEtherscan.push(WETHpairs[i]);
+        }
+      }
+      //stay within 5 calls per second Etherscan-API Limit
+      if (i % 5 === 0 && i > 0) {
+        const sleep = (delay) =>
+          new Promise((resolve) => setTimeout(resolve, delay));
+        console.log("sleep...");
+        await sleep(1000);
+      }
+      console.log(
+        `mapping supply from etherscan: ${i + 1} of ${WETHpairs.length} done`
+      );
+    }
+
+    //map priceUSD to token0 using WETH price
+    const mappedPriceUSD = mappedSupplyFromEtherscan.map((pair) => {
+      const nativePrice = Number(pair.token0Price);
+      const priceUSD = Number(priceWETH) / nativePrice;
+      pair.token0.priceUSD = priceUSD;
+      return pair;
+    });
+
+    //map marketcap to token0
+    const mappedMarketCapUSD = mappedPriceUSD.map((pair) => {
+      const marketCapUSD =
+        Number(pair.token0.priceUSD) * Number(pair.token0.supplyEtherscan);
+      pair.token0.marketCapUSD = marketCapUSD;
+      return pair;
+    });
+
+    //only keep tokens with MCap between 5 and 500k
+    const mc5to500 = mappedMarketCapUSD.filter((pair) => {
+      return (
+        pair.token0.marketCapUSD >= 5000 && pair.token0.marketCapUSD <= 500000
+      );
+    });
+
+    //map total liquidity in USD to token
+    const mappedTotalLiqUSD = mc5to500.map((pair) => {
+      const priceUSD = Number(pair.token0.priceUSD);
+      const totalLiqInTokens = Number(pair.token0.totalLiquidity);
+      const totalLiquidityUSD = priceUSD * totalLiqInTokens;
+      pair.token0.totalLiquidityUSD = totalLiquidityUSD;
+      return pair;
+    });
+
+    //map liquidity to mcap ratio to token
+    const mappedLiqToMcap = mappedTotalLiqUSD.map((pair) => {
+      const liquidityUSD = Number(pair.token0.totalLiquidityUSD);
+      const marketCapUSD = Number(pair.token0.marketCapUSD);
+      const ratio = liquidityUSD / marketCapUSD;
+      pair.token0.liqToMcap = ratio;
+      return pair;
+    });
+
+    //filter tokens with liquidity/mcap ratio above 10%
+    const filteredByLiquidity = mappedLiqToMcap.filter((pair) => {
+      return pair.token0.liqToMcap >= 0.1;
+    });
+    console.log(
+      `Filtered ${filteredByLiquidity.length} tokens with liquidity/mcap >= 10%`
+    );
+
+    //extract base token from pair and map pair adress
+    const allTokens = filteredByLiquidity.map((pair) => {
+      pair.token0.pairAdress = pair.id;
+      return pair.token0;
+    });
+
+    //map daily data of the last day to token
+    const mappedTokenDayData = [];
+    const date = new Date();
+    date.setUTCHours(0, 0, 0, 0);
+    const UTCString = date.toUTCString();
+    const UTCDate = new Date(UTCString);
+    const dateUNIX = Math.floor(UTCDate.getTime() / 1000); //get UNIX timestamp of last midnight
+
+    for (let k = 0; k < allTokens.length; k++) {
+      const token = allTokens[k];
+      token.dayDatas = [];
+      const tokenDayData = await getTokenDayDataV2(token.id, dateUNIX);
+      token.dayDatas.push(tokenDayData);
+      mappedTokenDayData.push(token);
+      console.log(`Mapping tokenDayData: ${k + 1} of ${allTokens.length} done`);
+    }
+
+    //filter by volume/mcap ratio greater 10%
+    const filteredByVolume = mappedTokenDayData.filter((token) => {
+      if (token.dayDatas[0]) {
+        const volume = Number(token.dayDatas[0].dailyVolumeUSD);
+        const mcap = Number(token.marketCapUSD);
+        const ratio = volume / mcap;
+        return ratio >= 0.1;
+      }
+    });
+
+    //save pairs to db
+    const dataForDB = {
+      dexGems: filteredByVolume,
+      quoteTokenAdress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      quoteTokenSymbol: "WETH",
+      dex: "uniswap-v2",
+      timestamp: new Date(),
+    };
+
+    await dexGemsCreate(dataForDB);
+    console.log(`saved ${filteredByVolume.length} dexGems to db`);
   } catch (err) {
     console.log(err.message);
   }
