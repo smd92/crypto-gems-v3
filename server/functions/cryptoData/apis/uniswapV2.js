@@ -143,7 +143,7 @@ const _pairQuery = async (pairID) => {
   }
 };
 
-const getLatestPairsV2 = async () => {
+const getLatestPairs = async () => {
   try {
     let pairsArr = [];
     for (let i = 0; i < 5; i++) {
@@ -164,16 +164,17 @@ const getLatestPairsV2 = async () => {
   }
 };
 
-const getTokenPriceUSDV2 = async (tokenID) => {
+const getTokenPriceUSD = async (tokenID) => {
   try {
     const response = await _tokenPriceUSDquery(tokenID);
+    console.log(response)
     return Number(response.data.data.tokenDayDatas[0].priceUSD);
   } catch (err) {
     console.log(err.message);
   }
 };
 
-const getTokenDayDataV2 = async (tokenID, dateUNIX) => {
+const getTokenDayData = async (tokenID, dateUNIX) => {
   try {
     const response = await _tokenDayDataQuery(tokenID, dateUNIX);
     return response.data.data.tokenDayDatas[0];
@@ -182,7 +183,7 @@ const getTokenDayDataV2 = async (tokenID, dateUNIX) => {
   }
 };
 
-const getPairByIDV2 = async (pairID) => {
+const getPairByID = async (pairID) => {
   try {
     const response = await _pairQuery(pairID);
     if (response.data.errors) {
@@ -282,8 +283,8 @@ const getAllPairsV2 = async () => {
 };*/
 
 export {
-  getLatestPairsV2,
-  getTokenPriceUSDV2,
-  getTokenDayDataV2,
-  getPairByIDV2,
+  getLatestPairs,
+  getTokenPriceUSD,
+  getTokenDayData,
+  getPairByID,
 };

@@ -14,9 +14,16 @@ import {
   filterByDeveloperScore,
 } from "./functions/cryptoData/gems/filterByMetrics.js";
 import { getGemsList } from "./functions/cryptoData/gems/getGemsList.js";
+import {
+  getLatestPairs,
+  getTokenPriceUSD,
+  getTokenDayData,
+} from "./functions/cryptoData/apis/uniswapV2.js";
+import { getTotalSupply } from "./functions/cryptoData/apis/etherscan.js";
 /* DB */
 import { coingeckoTrending24hCreate } from "./db/coingeckoTrending24h.js";
 import { getSavedGemsDaysAgo, gemsCreate, getGemsByDate } from "./db/gems.js";
+import { dexGemsCreate } from "./db/dexGems.js";
 /* GRAPHICS */
 import {
   createCGTrendingChart,
@@ -33,7 +40,7 @@ import { tweetFullList } from "./functions/twitter/gems/fullList.js";
 import { tweetSupplyRatio } from "./functions/twitter/gems/supplyRatio.js";
 import { tweetPriceGainers24hTop5 } from "./functions/twitter/gems/priceGainers24hTop5.js";
 import { tweetMaxSupply } from "./functions/twitter/gems/maxSupply.js";
-import {tweetDeveloperData} from "./functions/twitter/gems/developerData.js"
+import { tweetDeveloperData } from "./functions/twitter/gems/developerData.js";
 
 schedule("0 8 * * *", async function cron_coingeckoTrending() {
   try {
@@ -384,15 +391,15 @@ schedule("30 16 * * *", async function cron_gems_developerData() {
 });
 
 //get uniswap data
-schedule("0 17 * * *", async function cron_getDataUniswapV2() {
+schedule("53 13 * * *", async function cron_dexGems_uniswap() {
   try {
     //get WETH price to calculate USD price of token0
-    const priceWETH = await getTokenPriceUSDV2(
+    const priceWETH = await getTokenPriceUSD(
       "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
     );
 
     //get 5000 latest pairs
-    const latestPairs = await getLatestPairsV2();
+    const latestPairs = await getLatestPairs();
     console.log(`Fetched ${latestPairs.length} latest pairs`);
 
     //filter WETH pairs
@@ -494,7 +501,7 @@ schedule("0 17 * * *", async function cron_getDataUniswapV2() {
     for (let k = 0; k < allTokens.length; k++) {
       const token = allTokens[k];
       token.dayDatas = [];
-      const tokenDayData = await getTokenDayDataV2(token.id, dateUNIX);
+      const tokenDayData = await getTokenDayData(token.id, dateUNIX);
       token.dayDatas.push(tokenDayData);
       mappedTokenDayData.push(token);
       console.log(`Mapping tokenDayData: ${k + 1} of ${allTokens.length} done`);
