@@ -6,7 +6,7 @@ const buildTweet1 = (data) => {
   const lightningEmoji = String.fromCodePoint(0x26a1);
   const crystalballEmoji = String.fromCodePoint(0x1f52e);
 
-  const heading = `${lightningEmoji}${crystalballEmoji} Potentially interesting degen play:`;
+  const heading = `${lightningEmoji}${crystalballEmoji} Potentially interesting Microcap play:`;
   const symbolAndName = `$${data.researchData.symbol} ${data.researchData.name}`;
   const mCap = `${counterEmoji} MarketCap: ${
     data.researchData.marketCapUSD / 1000
