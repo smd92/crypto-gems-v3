@@ -58,7 +58,7 @@ const _createThread = (data) => {
   return threadArr;
 };
 
-const tweetUniLatestLaunches = async (data) => {
+const tweetFullList = async (data) => {
   try {
     const client = createClient();
     const thread = _createThread(data);
@@ -79,4 +79,4 @@ const tweetUniLatestLaunches = async (data) => {
   }
 };
 
-export { tweetUniLatestLaunches };
+export { tweetFullList };

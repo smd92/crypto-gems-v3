@@ -23,7 +23,7 @@ import { getTotalSupply } from "./functions/cryptoData/apis/etherscan.js";
 /* DB */
 import { coingeckoTrending24hCreate } from "./db/coingeckoTrending24h.js";
 import { getSavedGemsDaysAgo, gemsCreate, getGemsByDate } from "./db/gems.js";
-import { dexGemsCreate } from "./db/dexGems.js";
+import { dexGemsCreate, getDexGemsByDate } from "./db/dexGems.js";
 /* GRAPHICS */
 import {
   createCGTrendingChart,
@@ -36,11 +36,12 @@ import { tweetLunarCrushNftOfTheDay } from "./functions/twitter/lunarcrush/nftOf
 import { tweetGainers24h } from "./functions/twitter/gems/priceTracker24h.js";
 import { tweetGainers30d } from "./functions/twitter/gems/priceTracker30d.js";
 import { tweetNumberOfGems } from "./functions/twitter/gems/teaser.js";
-import { tweetFullList } from "./functions/twitter/gems/fullList.js";
+import { tweetFullList as tweetFullListGems } from "./functions/twitter/gems/fullList.js";
 import { tweetSupplyRatio } from "./functions/twitter/gems/supplyRatio.js";
 import { tweetPriceGainers24hTop5 } from "./functions/twitter/gems/priceGainers24hTop5.js";
 import { tweetMaxSupply } from "./functions/twitter/gems/maxSupply.js";
 import { tweetDeveloperData } from "./functions/twitter/gems/developerData.js";
+import {tweetFullList as tweetFullListDexGems} from "./functions/twitter/dexGems/fullList.js"
 
 schedule("0 8 * * *", async function cron_coingeckoTrending() {
   try {
@@ -242,7 +243,7 @@ schedule("30 13 * * *", async function cron_gems_fullList() {
     });
     //stop process if there are no gems
     if (gems.length === 0) return;
-    await tweetFullList(gems);
+    await tweetFullListGems(gems);
     console.log("successfully tweeted full list of today's gems");
   } catch (err) {
     console.log(err.message);
@@ -391,7 +392,7 @@ schedule("30 16 * * *", async function cron_gems_developerData() {
 });
 
 //get uniswap data
-schedule("53 13 * * *", async function cron_dexGems_uniswap() {
+schedule("1 15 * * *", async function cron_dexGems_uniswap() {
   try {
     //get WETH price to calculate USD price of token0
     const priceWETH = await getTokenPriceUSD(
@@ -528,6 +529,70 @@ schedule("53 13 * * *", async function cron_dexGems_uniswap() {
 
     await dexGemsCreate(dataForDB);
     console.log(`saved ${filteredByVolume.length} dexGems to db`);
+  } catch (err) {
+    console.log("Error at cron_dexGems_uniswap: " + err.message);
+  }
+});
+
+schedule("0 19 * * *", async function cron_dexGems_fullList() {
+  try {
+    const today = new Date();
+    const dbResult = await getDexGemsByDate(today);
+    const todaysData = dbResult[0].dexGems;
+    console.log(todaysData);
+
+    if (todaysData.length === 0) return;
+
+    const dataForTweet = todaysData.map((token) => {
+      return {
+        symbol: token.symbol,
+        name: token.name,
+      };
+    });
+    //tweet data
+    await tweetFullListDexGems(dataForTweet);
+    console.log("successfully tweeted uniswap latest launches");
+  } catch (err) {
+    console.log("Error at cron_dexGems_fullList: " + err.message);
+  }
+});
+
+schedule("0 20 * * *", async function tweet_strongest_dexGems_24h() {
+  try {
+    //connect to db
+    mongoConfig.connectToMongo();
+    //get yesterday's dexgems
+    const today = new Date();
+    const yesterday = new Date(new Date().setDate(today.getDate() - 1));
+    const data = await getDexGemsByDate(yesterday);
+    const dexGems = [];
+    data.forEach((document) => {
+      document.dexGems.forEach((dexGem) => dexGems.push(dexGem));
+    });
+
+    const mappedPriceChange = await getPriceChange(dexGems);
+
+    const filteredAndSortedByPriceChange = mappedPriceChange
+      .filter((dexGem) => dexGem.priceChangePct >= 10)
+      .sort((a, b) => {
+        if (a.priceChangePct > b.priceChangePct) return -1;
+        if (a.priceChangePct < b.priceChangePct) return 1;
+        if (a.priceChangePct === b.priceChangePct) return 0;
+      });
+
+    //stop process if there are no results
+    if (filteredAndSortedByPriceChange.length === 0) return;
+    //format data for tweet
+    const dataForTweet = filteredAndSortedByPriceChange.map((dexGem) => {
+      return {
+        symbol: dexGem.symbol,
+        name: dexGem.name,
+        priceChangePct: dexGem.priceChangePct,
+      };
+    });
+    //tweet data
+    await tweet_dexGems_gainers24h(dataForTweet, dexGems.length);
+    console.log("successfully tweeted dexGem gainers 24h (>10%)");
   } catch (err) {
     console.log(err.message);
   }

@@ -56,7 +56,7 @@ const _latestPairsQuery = async (skip) => {
 
     return result;
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at _latestPairsQuery: " + err.message);
   }
 };
 
@@ -82,7 +82,7 @@ const _tokenPriceUSDquery = async (tokenID) => {
 
     return result;
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at _tokenPriceUSDquery: " + err.message);
   }
 };
 
@@ -112,7 +112,7 @@ const _tokenDayDataQuery = async (tokenID, dateUNIX) => {
 
     return result;
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at _tokenDayDataQuery: " + err.message);
   }
 };
 
@@ -139,7 +139,7 @@ const _pairQuery = async (pairID) => {
 
     return result;
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at _pairQuery: " + err.message);
   }
 };
 
@@ -160,17 +160,16 @@ const getLatestPairs = async () => {
 
     return pairsArr;
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at getLatestPairs: " + err.message);
   }
 };
 
 const getTokenPriceUSD = async (tokenID) => {
   try {
     const response = await _tokenPriceUSDquery(tokenID);
-    console.log(response)
     return Number(response.data.data.tokenDayDatas[0].priceUSD);
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at getTokenPriceUSD: " + err.message);
   }
 };
 
@@ -179,7 +178,7 @@ const getTokenDayData = async (tokenID, dateUNIX) => {
     const response = await _tokenDayDataQuery(tokenID, dateUNIX);
     return response.data.data.tokenDayDatas[0];
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at getTokenDayData: " + err.message);
   }
 };
 
@@ -194,7 +193,7 @@ const getPairByID = async (pairID) => {
       return result;
     }
   } catch (err) {
-    console.log(err.message);
+    console.log("Error at getPairByID: " + err.message);
   }
 };
 
@@ -282,9 +281,4 @@ const getAllPairsV2 = async () => {
   }
 };*/
 
-export {
-  getLatestPairs,
-  getTokenPriceUSD,
-  getTokenDayData,
-  getPairByID,
-};
+export { getLatestPairs, getTokenPriceUSD, getTokenDayData, getPairByID };
