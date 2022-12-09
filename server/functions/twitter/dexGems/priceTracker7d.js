@@ -1,5 +1,5 @@
-import { createClient, createTestClient } from "./twitter_config.js";
-import { threadHelper } from "./twitter_helperFunctions.js";
+import { createClient, createTestClient } from "../config.js";
+import { threadHelper } from "../helperFunctions.js";
 
 const _createTweetHeader = (numberOfDexGems, data) => {
   const unicornEmoji = String.fromCodePoint(0x1f984);
@@ -44,14 +44,14 @@ const _createThread = (data, numberOfDexGems) => {
   return threadArr;
 };
 
-const tweet_dexGems_strongest7d = async (data, numberOfDexGems) => {
+const tweetDexGemsGainers7d = async (data, numberOfDexGems) => {
   try {
     const client = createClient();
     const thread = _createThread(data, numberOfDexGems);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("tweet_dexGems_strongest7d.js: " + err.message);
+    console.log("twitter/dexGems/priceTracker7d.js: " + err.message);
   }
 };
 
-export { tweet_dexGems_strongest7d };
+export { tweetDexGemsGainers7d };

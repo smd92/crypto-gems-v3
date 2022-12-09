@@ -1,4 +1,4 @@
-import { createClient, createTestClient } from "./twitter_config.js";
+import { createClient, createTestClient } from "../config.js";
 
 const counterEmoji = String.fromCodePoint(0x1f539);
 

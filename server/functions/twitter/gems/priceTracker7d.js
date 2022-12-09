@@ -45,14 +45,14 @@ const _createThread = (data) => {
   return threadArr;
 };
 
-const tweetWeeklyWinners = async (data) => {
+const tweetGemsWeeklyWinners = async (data) => {
   try {
     const client = createClient();
     const thread = _createThread(data);
     await client.v1.tweetThread(thread);
   } catch (err) {
-    console.log("twitter_weeklyWinners.js: " + err.message);
+    console.log("twitter/gems/priceTracker7d.js: " + err.message);
   }
 };
 
-export { tweetWeeklyWinners };
+export { tweetGemsWeeklyWinners };

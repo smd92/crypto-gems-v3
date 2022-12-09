@@ -1,5 +1,5 @@
-import { createClient, createTestClient } from "./twitter_config.js";
-import { threadHelper } from "./twitter_helperFunctions.js";
+import { createClient, createTestClient } from "../config.js";
+import { threadHelper } from "../helperFunctions.js";
 
 const _createTweetHeader = (numberOfDexGems) => {
   const sirenEmoji = String.fromCodePoint(0x1f6a8); //code point from https://emojipedia.org/de/emoji/
@@ -46,7 +46,7 @@ const _createThread = (data, numberOfDexGems) => {
   return threadArr;
 };
 
-const tweet_dexGems_gainers24h = async (data, numberOfDexGems) => {
+const tweetDexGemsGainers24h = async (data, numberOfDexGems) => {
   try {
     const client = createClient();
     const thread = _createThread(data, numberOfDexGems);
@@ -56,4 +56,4 @@ const tweet_dexGems_gainers24h = async (data, numberOfDexGems) => {
   }
 };
 
-export { tweet_dexGems_gainers24h };
+export { tweetDexGemsGainers24h };

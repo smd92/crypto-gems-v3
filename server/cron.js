@@ -20,6 +20,8 @@ import {
   getTokenDayData,
 } from "./functions/cryptoData/apis/uniswapV2.js";
 import { getTotalSupply } from "./functions/cryptoData/apis/etherscan.js";
+import { getPriceChange } from "./functions/cryptoData/dexGems/priceChange.js";
+import { getPerformance7d } from "./functions/cryptoData/gems/getPricePerformance.js";
 /* DB */
 import { coingeckoTrending24hCreate } from "./db/coingeckoTrending24h.js";
 import { getSavedGemsDaysAgo, gemsCreate, getGemsByDate } from "./db/gems.js";
@@ -41,7 +43,10 @@ import { tweetSupplyRatio } from "./functions/twitter/gems/supplyRatio.js";
 import { tweetPriceGainers24hTop5 } from "./functions/twitter/gems/priceGainers24hTop5.js";
 import { tweetMaxSupply } from "./functions/twitter/gems/maxSupply.js";
 import { tweetDeveloperData } from "./functions/twitter/gems/developerData.js";
-import {tweetFullList as tweetFullListDexGems} from "./functions/twitter/dexGems/fullList.js"
+import { tweetFullList as tweetFullListDexGems } from "./functions/twitter/dexGems/fullList.js";
+import { tweetDexGemsGainers24h } from "./functions/twitter/dexGems/priceTracker24h.js";
+import { tweetDexGemsGainers7d } from "./functions/twitter/dexGems/priceTracker7d.js";
+import { tweetGemsWeeklyWinners } from "./functions/twitter/gems/priceTracker7d.js";
 
 schedule("0 8 * * *", async function cron_coingeckoTrending() {
   try {
@@ -557,10 +562,8 @@ schedule("0 19 * * *", async function cron_dexGems_fullList() {
   }
 });
 
-schedule("0 20 * * *", async function tweet_strongest_dexGems_24h() {
+schedule("0 20 * * *", async function cron_dexGems_gainers24h() {
   try {
-    //connect to db
-    mongoConfig.connectToMongo();
     //get yesterday's dexgems
     const today = new Date();
     const yesterday = new Date(new Date().setDate(today.getDate() - 1));
@@ -591,9 +594,198 @@ schedule("0 20 * * *", async function tweet_strongest_dexGems_24h() {
       };
     });
     //tweet data
-    await tweet_dexGems_gainers24h(dataForTweet, dexGems.length);
+    await tweetDexGemsGainers24h(dataForTweet, dexGems.length);
     console.log("successfully tweeted dexGem gainers 24h (>10%)");
+  } catch (err) {
+    console.log("Error at cron_dexGems_gainers24h: " + err.message);
+  }
+});
+
+schedule("0 21 * * *", async function cron_dexGems_gainers7d() {
+  try {
+    //get yesterday's dexgems
+    const today = new Date();
+    const sevenDaysAgo = new Date(new Date().setDate(today.getDate() - 7));
+    const data = await getDexGemsByDate(sevenDaysAgo);
+    const dexGems = [];
+    data.forEach((document) => {
+      document.dexGems.forEach((dexGem) => dexGems.push(dexGem));
+    });
+
+    const mappedPriceChange = await getPriceChange(dexGems);
+
+    const filteredAndSortedByPriceChange = mappedPriceChange
+      .filter((dexGem) => dexGem.priceChangePct >= 10)
+      .sort((a, b) => {
+        if (a.priceChangePct > b.priceChangePct) return -1;
+        if (a.priceChangePct < b.priceChangePct) return 1;
+        if (a.priceChangePct === b.priceChangePct) return 0;
+      });
+
+    //stop process if there are no results
+    if (filteredAndSortedByPriceChange.length === 0) return;
+    //format data for tweet
+    const dataForTweet = filteredAndSortedByPriceChange.map((dexGem) => {
+      return {
+        symbol: dexGem.symbol,
+        name: dexGem.name,
+        priceChangePct: dexGem.priceChangePct,
+      };
+    });
+    //tweet data
+    await tweetDexGemsGainers7d(dataForTweet, dexGems.length);
+    console.log("successfully tweeted dexGem gainers 7d (>20%)");
+  } catch (err) {
+    console.log("Error at cron_dexGems_gainers7d: " + err.message);
+  }
+});
+
+schedule("30 20 * * SUN", async function cron_gems_weeklyWinners() {
+  try {
+    //get last weeks gems
+    const gemsLast7d = await getSavedGemsDaysAgo(7);
+    //includes today's gems
+    const today = new Date();
+    const todaysGems = await getGemsByDate(today);
+    const data = [...gemsLast7d, ...todaysGems];
+    const gems = [];
+    data.forEach((document) => {
+      //exclude ultra-low caps
+      if (document.minMarketCap >= 1_000_000)
+        document.gems.forEach((gem) => gems.push(gem));
+    });
+    //stop process if there are no gems
+    if (gems.length === 0) return;
+    //remove double values
+    const filtered = [
+      ...new Map(gems.map((gem) => [gem.coingecko_id, gem])).values(),
+    ].filter((gem) => gem.coingecko_id !== undefined);
+    //get 7d performance
+    const performance7d = await getPerformance7d(filtered);
+    //remove losers and only keep gems that rose by more than 20%
+    const gainers7d = filterByPriceChange(
+      performance7d,
+      "price_change_percentage_7d",
+      20
+    );
+    //stop process if there are no gainers
+    if (gainers7d.length === 0) return;
+    //format data for tweet
+    const gainers7dForTweet = gainers7d.map((gem) => {
+      return {
+        symbol: gem.symbol,
+        name: gem.name,
+        //round to two decimals
+        price_change_percentage_7d:
+          Math.round((gem.price_change_percentage_7d + Number.EPSILON) * 100) /
+          100,
+      };
+    });
+    //tweet data
+    await tweetGemsWeeklyWinners(gainers7dForTweet);
+    console.log("successfully tweeted gems weeklyWinners");
+  } catch (err) {
+    console.log("Error at cron_gems_weeklyWinners: " + err.message);
+  }
+});
+/*
+import fs from "fs";
+import { createDexGemsResearch } from "./db/dexGemsResearch.js";
+
+schedule("* * * * *", async function cron_importDexGems() {
+  try {
+    const dataRaw = fs.readFileSync(
+      "D:/Program Files (x86)/github/crypto-gems-v3/server/dexGems.json"
+    );
+    const dataParsed = JSON.parse(dataRaw);
+    dataParsed.forEach((document) => {
+      const d = document.timestamp["$date"]["$numberLong"];
+      const date = new Date(d * 1000);
+      console.log(date)
+      dexGemsCreate({
+        dexGems: document.dexGems,
+        quoteTokenAdress: document.quoteTokenAdress,
+        quoteTokenSymbol: document.quoteTokenSymbol,
+        dex: document.dex,
+        createdAt: d,
+        updatedAt: d,
+      });
+    });
+    console.log("done");
   } catch (err) {
     console.log(err.message);
   }
 });
+
+schedule("* * * * *", async function cron_importGems() {
+  try {
+    const dataRaw = fs.readFileSync(
+      "D:/Program Files (x86)/github/crypto-gems-v3/server/dexGems.json"
+    );
+    const dataParsed = JSON.parse(dataRaw);
+    dataParsed.forEach((document) => {
+      const d = document.timestamp["$date"]["$numberLong"];
+      const date = new Date(d * 1000);
+      console.log(date)
+      dexGemsCreate({
+        dexGems: document.dexGems,
+        quoteTokenAdress: document.quoteTokenAdress,
+        quoteTokenSymbol: document.quoteTokenSymbol,
+        dex: document.dex,
+        createdAt: d,
+        updatedAt: d,
+      });
+    });
+    console.log("done");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+schedule("* * * * *", async function cron_importDexGemsResearch() {
+  try {
+    const dataRaw = fs.readFileSync(
+      "D:/Program Files (x86)/github/crypto-gems-v3/server/dexGemsResearch.json"
+    );
+    const dataParsed = JSON.parse(dataRaw);
+    dataParsed.forEach((document) => {
+      const d = document.timestamp["$date"]["$numberLong"];
+      const date = new Date(d * 1000);
+      console.log(date)
+      createDexGemsResearch({
+        researchData: document.researchData,
+        isTweeted: document.isTweeted,
+        createdAt: d,
+        updatedAt: d,
+      });
+    });
+    console.log("done");
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+schedule("* * * * *", async function cron_CoingeckoTrending24h() {
+  try {
+    const dataRaw = fs.readFileSync(
+      "D:/Program Files (x86)/github/crypto-gems-v3/server/dexGems.json"
+    );
+    const dataParsed = JSON.parse(dataRaw);
+    dataParsed.forEach((document) => {
+      const d = document.timestamp["$date"]["$numberLong"];
+      const date = new Date(d * 1000);
+      console.log(date)
+      dexGemsCreate({
+        dexGems: document.dexGems,
+        quoteTokenAdress: document.quoteTokenAdress,
+        quoteTokenSymbol: document.quoteTokenSymbol,
+        dex: document.dex,
+        createdAt: d,
+        updatedAt: d,
+      });
+    });
+    console.log("done");
+  } catch (err) {
+    console.log(err.message);
+  }
+});*/

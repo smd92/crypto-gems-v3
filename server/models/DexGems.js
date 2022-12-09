@@ -6,10 +6,12 @@ const DexGemsSchema = new mongoose.Schema(
     quoteTokenAdress: { type: String, required: true },
     quoteTokenSymbol: { type: String, required: true },
     dex: { type: String, required: true },
+    //createdAt: {type: Date}, //comment in for import
+    //updatedAt: {type: Date}, //comment in for import
   },
   {
     collection: "dexGems",
-    timestamps: true,
+    timestamps: true, // comment out for import
   }
 );
 

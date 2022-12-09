@@ -9,6 +9,8 @@ export const dexGemsCreate = async (data) => {
     quoteTokenAdress: data.quoteTokenAdress,
     quoteTokenSymbol: data.quoteTokenSymbol,
     dex: data.dex,
+    //createdAt: data.createdAt, //comment in for import
+    //updatedAt: data.updatedAt, //comment in for import
   });
   try {
     await dexGems.save();

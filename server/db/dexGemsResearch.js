@@ -6,6 +6,8 @@ export const createDexGemsResearch = async (data) => {
   const dexGemsResearch = new DexGemsResearch({
     researchData: data.researchData,
     isTweeted: data.isTweeted,
+    //createdAt: data.createdAt, //comment in for import
+    //updatedAt: data.updatedAt, //comment in for import
   });
   try {
     await dexGemsResearch.save();
