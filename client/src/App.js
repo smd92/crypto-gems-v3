@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
+import MicroCaps from "scenes/microCaps";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -22,6 +23,10 @@ function App() {
             <Route
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
+            />
+                        <Route
+              path="/microcaps"
+              element={isAuth ? <MicroCaps /> : <Navigate to="/" />}
             />
           </Routes>
         </ThemeProvider>
