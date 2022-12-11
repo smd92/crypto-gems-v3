@@ -1,12 +1,12 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import Navbar from "scenes/navbar";
-import DataTable from "components/DataTable";
+import ResearchPage from "./ResearchPage";
 
 const MicroCaps = () => {
   return (
     <Box>
         <Navbar />
-        <DataTable />
+        <ResearchPage />
     </Box>
   )
 }

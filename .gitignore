@@ -105,3 +105,6 @@ dist
 
 # images
 coingeckoTrending.png
+
+#trash
+.DS_Store
