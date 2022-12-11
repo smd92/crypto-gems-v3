@@ -2,21 +2,31 @@ import React from "react";
 import { Box, Tabs, Tab, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const BasicTabs = () => {
+function BasicTabs() {
+  const [value, setValue] = React.useState("one");
   const navigate = useNavigate();
-  const handleClick = () => navigate("/microcaps");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs aria-label="basic tabs example">
-          <Tab label="Item One" onClick={handleClick} />
-          <Tab label="Item Two" />
-          <Tab label="Item Three" />
-        </Tabs>
-      </Box>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="secondary tabs example"
+      >
+        <Tab value="one" label="Home" onClick={() => navigate("/home")} />
+        <Tab
+          value="two"
+          label="Microcaps"
+          onClick={() => navigate("/microcaps")}
+        />
+        <Tab value="three" label="Lowcaps" />
+      </Tabs>
     </Box>
   );
-};
+}
 
 export default BasicTabs;

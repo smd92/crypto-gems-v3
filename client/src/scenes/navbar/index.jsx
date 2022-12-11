@@ -3,6 +3,7 @@ import {
   Box,
   IconButton,
   Typography,
+  MenuItem,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
@@ -17,7 +18,6 @@ const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const theme = useTheme();
@@ -55,9 +55,6 @@ const Navbar = () => {
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          {/*<Message sx={{ fontSize: "25px" }} />*/}
-          {/*<Notifications sx={{ fontSize: "25px" }} />*/}
-          {/*<Help sx={{ fontSize: "25px" }} />*/}
           <BasicTabs />
         </FlexBetween>
       ) : (
@@ -107,9 +104,16 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            {/*            <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
-              <Help sx={{ fontSize: "25px" }} />*/}
+            <MenuItem onClick={() => navigate("/home")}>
+              Home
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/microcaps")}>
+              Microcaps
+            </MenuItem>
+            <MenuItem onClick={() => navigate("/lowcaps")}>
+              Lowcaps
+            </MenuItem>
+            <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
           </FlexBetween>
         </Box>
       )}
