@@ -25,9 +25,11 @@ export default function DataTable(props) {
           }}
         />
       </div>
+
+      {/* BUTTONS FOR DB OPERATIONS */}
       <AddButton />
       {selectedRowData.length === 1 && <EditButton />}
-      {selectedRowData.length >= 1 && <DeleteButton />}
+      {selectedRowData.length >= 1 && <DeleteButton data={selectedRowData}/>}
     </>
   );
 }
