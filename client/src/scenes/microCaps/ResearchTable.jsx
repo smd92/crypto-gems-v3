@@ -45,15 +45,15 @@ const ResearchTable = () => {
   ];
 
   const getRows = () => {
-    const rows = data.map((obj, index) => {
+    const rows = data.map((obj) => {
       return {
-        id: index,
+        id: obj._id,
         symbol: obj.researchData.symbol,
         name: obj.researchData.name,
         dexToolsURL: obj.researchData.dexToolsURL,
         tokenAddress: obj.researchData.tokenAdress,
         isBuy: obj.researchData.isBuy,
-        dateAdded: obj.createdAt,
+        dateAdded: new Date(obj.createdAt),
       };
     });
     setRows(rows);
