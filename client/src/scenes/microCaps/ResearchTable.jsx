@@ -30,7 +30,6 @@ const ResearchTable = () => {
       setData(null);
       console.log(err.message);
     } finally {
-        getRows();
       setLoading(false);
     }
   };
@@ -62,7 +61,8 @@ const ResearchTable = () => {
 
   React.useEffect(() => {
     getData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (data) getRows();
+  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <DataTable rows={rows} columns={columns} />;
 };
