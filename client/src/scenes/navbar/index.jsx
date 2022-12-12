@@ -104,15 +104,11 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <MenuItem onClick={() => navigate("/home")}>
-              Home
-            </MenuItem>
+            <MenuItem onClick={() => navigate("/home")}>Home</MenuItem>
             <MenuItem onClick={() => navigate("/microcaps")}>
               Microcaps
             </MenuItem>
-            <MenuItem onClick={() => navigate("/lowcaps")}>
-              Lowcaps
-            </MenuItem>
+            <MenuItem onClick={() => navigate("/lowcaps")}>Lowcaps</MenuItem>
             <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
           </FlexBetween>
         </Box>

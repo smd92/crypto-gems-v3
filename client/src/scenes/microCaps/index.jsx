@@ -5,10 +5,10 @@ import ResearchPage from "./ResearchPage";
 const MicroCaps = () => {
   return (
     <Box>
-        <Navbar />
-        <ResearchPage />
+      <Navbar />
+      <ResearchPage />
     </Box>
-  )
-}
+  );
+};
 
-export default MicroCaps
+export default MicroCaps;

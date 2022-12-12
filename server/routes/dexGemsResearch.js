@@ -8,7 +8,6 @@ import {
   dexGemsResearch_deleteDexGemsResearchById,
 } from "../controllers/dexGemsResearchController.js";
 
-
 const router = express.Router();
 
 /* READ */

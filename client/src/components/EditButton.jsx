@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 
 const EditButton = () => {
   return (
     <Button variant="contained" startIcon={<EditIcon />}>
-    Edit
-  </Button>
-  )
-}
+      Edit
+    </Button>
+  );
+};
 
-export default EditButton
+export default EditButton;

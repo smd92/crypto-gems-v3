@@ -38,25 +38,17 @@ const ResearchTable = () => {
     }
   };
 
-  const deleteData = async () => {
-    for (let i = 0; i < selectedRowData.length; i++) {
-      try {
-        const response = await fetch(
-          `/dexGemsResearch/${selectedRowData[i].id}`,
-          {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!response.ok) {
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-      } catch (err) {
-        console.log("Unable to delete data: " + err.message);
-      }
-    }
+  const deleteData = () => {
+    const promises = selectedRowData.map((obj) => {
+      return fetch(`/dexGemsResearch/${obj.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        })
+    })
+    Promise.all(promises)
+    .then(() => getData())
+    .catch((err) => console.log("Unable to delete data: " + err.message));
   };
 
   const columns = [
@@ -87,9 +79,10 @@ const ResearchTable = () => {
   React.useEffect(() => {
     getData();
     if (data) getRows();
-  }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
+    data &&
     <>
       <DataTable
         rows={rows}

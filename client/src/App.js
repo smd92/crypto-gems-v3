@@ -24,7 +24,7 @@ function App() {
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
-                        <Route
+            <Route
               path="/microcaps"
               element={isAuth ? <MicroCaps /> : <Navigate to="/" />}
             />
