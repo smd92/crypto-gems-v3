@@ -1,11 +1,8 @@
-import React from 'react'
-import { useSelector } from "react-redux";
-import DataTable from "components/DataTable";
+import React from "react";
+import ResearchTable from "./ResearchTable";
 
 const ResearchPage = () => {
-  return (
-    <DataTable />
-  )
-}
+  return <ResearchTable />;
+};
 
-export default ResearchPage
+export default ResearchPage;
