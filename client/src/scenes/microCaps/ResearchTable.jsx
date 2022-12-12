@@ -1,12 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
+import AddButton from "components/AddButton";
+import EditButton from "components/EditButton";
+import DeleteButton from "components/DeleteButton";
 
 const ResearchTable = () => {
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [rows, setRows] = React.useState([]);
+  const [selectedRowData, setSelectedRowData] = React.useState([]);
   const token = useSelector((state) => state.token);
 
   const getData = async () => {
@@ -31,6 +35,27 @@ const ResearchTable = () => {
       console.log(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const deleteData = async () => {
+    for (let i = 0; i < selectedRowData.length; i++) {
+      try {
+        const response = await fetch(
+          `/dexGemsResearch/${selectedRowData[i].id}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(
+            `This is an HTTP error: The status is ${response.status}`
+          );
+        }
+      } catch (err) {
+        console.log("Unable to delete data: " + err.message);
+      }
     }
   };
 
@@ -64,7 +89,19 @@ const ResearchTable = () => {
     if (data) getRows();
   }, [loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <DataTable rows={rows} columns={columns} />;
+  return (
+    <>
+      <DataTable
+        rows={rows}
+        columns={columns}
+        setSelectedRowData={setSelectedRowData}
+      />
+      {/* BUTTONS FOR DB OPERATIONS */}
+      <AddButton />
+      {selectedRowData.length === 1 && <EditButton />}
+      {selectedRowData.length >= 1 && <DeleteButton deleteData={deleteData} />}
+    </>
+  );
 };
 
 export default ResearchTable;
