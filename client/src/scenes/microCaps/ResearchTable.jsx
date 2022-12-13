@@ -1,15 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
-import AddButton from "components/AddButton";
-import EditButton from "components/EditButton";
-import DeleteButton from "components/DeleteButton";
+import AddButton from "components/Buttons/AddButton";
+import EditButton from "components/Buttons/EditButton";
+import DeleteButton from "components/Buttons/DeleteButton";
+import TweetButton from "components/Buttons/TweetButton";
+import BasicModal from "components/BasicModal";
 
 const ResearchTable = () => {
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
-  const [rows, setRows] = React.useState([]);
   const [selectedRowData, setSelectedRowData] = React.useState([]);
   const token = useSelector((state) => state.token);
 
@@ -38,17 +39,44 @@ const ResearchTable = () => {
     }
   };
 
+  const addData = () => {
+    try {
+    } catch (err) {
+      setError(err.message);
+      setData(null);
+      console.log(err.message);
+    }
+  };
+
+  const editData = () => {
+    try {
+    } catch (err) {
+      setError(err.message);
+      setData(null);
+      console.log(err.message);
+    }
+  };
+
   const deleteData = () => {
     const promises = selectedRowData.map((obj) => {
-      return fetch(`/dexGemsResearch/${obj.id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        })
-    })
+      return fetch(`/dexGemsResearch/${obj.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    });
+
     Promise.all(promises)
-    .then(() => getData())
-    .catch((err) => console.log("Unable to delete data: " + err.message));
+      .then(() => getData())
+      .catch((err) => console.log("Unable to delete data: " + err.message));
+  };
+
+  const tweetData = async () => {
+    try {
+    } catch (err) {
+      setError(err.message);
+      setData(null);
+      console.log(err.message);
+    }
   };
 
   const columns = [
@@ -59,6 +87,7 @@ const ResearchTable = () => {
     { field: "tokenAddress", headerName: "Token Address", width: 200 },
     { field: "isBuy", headerName: "Is Buy?", width: 200 },
     { field: "dateAdded", headerName: "Date Added", width: 200 },
+    { field: "isTweeted", headerName: "Is Tweeted?", width: 200 },
   ];
 
   const getRows = () => {
@@ -71,29 +100,36 @@ const ResearchTable = () => {
         tokenAddress: obj.researchData.tokenAdress,
         isBuy: obj.researchData.isBuy,
         dateAdded: new Date(obj.createdAt),
+        isTweeted: obj.isTweeted,
       };
     });
-    setRows(rows);
+    return rows;
   };
 
   React.useEffect(() => {
     getData();
-    if (data) getRows();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    data &&
-    <>
-      <DataTable
-        rows={rows}
-        columns={columns}
-        setSelectedRowData={setSelectedRowData}
-      />
-      {/* BUTTONS FOR DB OPERATIONS */}
-      <AddButton />
-      {selectedRowData.length === 1 && <EditButton />}
-      {selectedRowData.length >= 1 && <DeleteButton deleteData={deleteData} />}
-    </>
+    data && (
+      <div>
+        <DataTable
+          rows={getRows()}
+          columns={columns}
+          setSelectedRowData={setSelectedRowData}
+        />
+        {/* BUTTONS FOR DB OPERATIONS */}
+        {selectedRowData.length === 0 && <AddButton addData={addData} />}
+        {selectedRowData.length === 1 && <EditButton editData={editData} />}
+        {selectedRowData.length >= 1 && (
+          <DeleteButton deleteData={deleteData} />
+        )}
+        {selectedRowData.length === 1 &&
+          selectedRowData[0].isTweeted == false && (
+            <TweetButton tweetData={tweetData} />
+          )}
+      </div>
+    )
   );
 };
 
