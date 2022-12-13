@@ -5,7 +5,6 @@ import AddButton from "components/Buttons/AddButton";
 import EditButton from "components/Buttons/EditButton";
 import DeleteButton from "components/Buttons/DeleteButton";
 import TweetButton from "components/Buttons/TweetButton";
-import BasicModal from "components/BasicModal";
 
 const ResearchTable = () => {
   const [data, setData] = React.useState(null);
