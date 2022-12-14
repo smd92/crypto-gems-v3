@@ -2,9 +2,9 @@ import React from "react";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 
-const EditButton = () => {
+const EditButton = (props) => {
   return (
-    <Button variant="contained" startIcon={<EditIcon />}>
+    <Button variant="contained" startIcon={<EditIcon />} onClick={props.onClick}>
       Edit
     </Button>
   );

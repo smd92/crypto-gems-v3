@@ -40,6 +40,7 @@ const ResearchTable = () => {
 
   const addData = () => {
     try {
+      console.log("add data")
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -49,6 +50,7 @@ const ResearchTable = () => {
 
   const editData = () => {
     try {
+      console.log("edit data")
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -69,8 +71,9 @@ const ResearchTable = () => {
       .catch((err) => console.log("Unable to delete data: " + err.message));
   };
 
-  const tweetData = async () => {
+  const tweetData = () => {
     try {
+      console.log("tweet data")
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -117,16 +120,16 @@ const ResearchTable = () => {
           columns={columns}
           setSelectedRowData={setSelectedRowData}
         />
-        {/* BUTTONS FOR DB OPERATIONS */}
-        {selectedRowData.length === 0 && <AddButton addData={addData} />}
-        {selectedRowData.length === 1 && <EditButton editData={editData} />}
+        {/* BUTTONS FOR DB OPERATIONS 
+        {selectedRowData.length === 0 && <AddButton onClick={addData} />}
+        {selectedRowData.length === 1 && <EditButton onClick={editData} />}
         {selectedRowData.length >= 1 && (
-          <DeleteButton deleteData={deleteData} />
+          <DeleteButton onClick={deleteData} />
         )}
         {selectedRowData.length === 1 &&
           selectedRowData[0].isTweeted == false && (
-            <TweetButton tweetData={tweetData} />
-          )}
+            <TweetButton onClick={tweetData} />
+          )} */}
       </div>
     )
   );

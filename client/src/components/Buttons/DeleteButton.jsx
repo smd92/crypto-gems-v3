@@ -7,7 +7,7 @@ const DeleteButton = (props) => {
     <Button
       variant="contained"
       startIcon={<DeleteIcon />}
-      onClick={props.deleteData}
+      onClick={props.onClick}
     >
       Delete
     </Button>
