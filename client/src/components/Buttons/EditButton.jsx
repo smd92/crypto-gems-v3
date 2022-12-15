@@ -4,7 +4,11 @@ import EditIcon from "@mui/icons-material/Edit";
 
 const EditButton = (props) => {
   return (
-    <Button variant="contained" startIcon={<EditIcon />} onClick={props.onClick}>
+    <Button
+      variant="contained"
+      startIcon={<EditIcon />}
+      onClick={props.onClick}
+    >
       Edit
     </Button>
   );

@@ -1,10 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
-import AddButton from "components/Buttons/AddButton";
-import EditButton from "components/Buttons/EditButton";
-import DeleteButton from "components/Buttons/DeleteButton";
-import TweetButton from "components/Buttons/TweetButton";
+import ResearchModal from "scenes/microCaps/Research/ResearchModal";
 
 const ResearchTable = () => {
   const [data, setData] = React.useState(null);
@@ -120,16 +117,17 @@ const ResearchTable = () => {
           columns={columns}
           setSelectedRowData={setSelectedRowData}
         />
-        {/* BUTTONS FOR DB OPERATIONS 
-        {selectedRowData.length === 0 && <AddButton onClick={addData} />}
-        {selectedRowData.length === 1 && <EditButton onClick={editData} />}
+        {/* BUTTONS FOR DB OPERATIONS */}
+        {selectedRowData.length === 0 && <ResearchModal dbOperation={"addData"}/>}
+        {selectedRowData.length === 1 && <ResearchModal dbOperation={"editData"}/>}
         {selectedRowData.length >= 1 && (
-          <DeleteButton onClick={deleteData} />
+          <ResearchModal dbOperation={"deleteData"}/>
         )}
         {selectedRowData.length === 1 &&
           selectedRowData[0].isTweeted == false && (
-            <TweetButton onClick={tweetData} />
-          )} */}
+            <ResearchModal dbOperation={"tweetData"}/>
+          )}
+          
       </div>
     )
   );

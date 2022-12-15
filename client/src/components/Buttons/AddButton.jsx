@@ -4,7 +4,11 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 
 const AddButton = (props) => {
   return (
-    <Button variant="contained" startIcon={<AddCircleOutlineOutlinedIcon onClick={props.onClick} />}>
+    <Button
+      variant="contained"
+      startIcon={<AddCircleOutlineOutlinedIcon />}
+      onClick={props.onClick}
+    >
       Add
     </Button>
   );
