@@ -490,9 +490,10 @@ schedule("1 15 * * *", async function cron_dexGems_uniswap() {
       `Filtered ${filteredByLiquidity.length} tokens with liquidity/mcap >= 10%`
     );
 
-    //extract base token from pair and map pair adress
+    //extract base token from pair and map pair address and created-at-timestamp
     const allTokens = filteredByLiquidity.map((pair) => {
       pair.token0.pairAdress = pair.id;
+      pair.token0.createdAtTimestamp = pair.createdAtTimestamp;
       return pair.token0;
     });
 
