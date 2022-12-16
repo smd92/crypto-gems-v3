@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
+import ResearchForm from "./ResearchForm";
 import AddButton from "components/Buttons/AddButton";
 import EditButton from "components/Buttons/EditButton";
 import DeleteButton from "components/Buttons/DeleteButton";
@@ -38,7 +39,13 @@ const ResearchModal = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}></Box>
+        <Box sx={style}>
+          <ResearchForm />
+          {/* {isAdd && <AddButton onClick={props.handleOperation} />}
+          {isEdit && <EditButton onClick={props.handleOperation} />}
+          {isDelete && <DeleteButton onClick={props.handleOperation} />}
+          {isTweet && <TweetButton onClick={props.handleOperation} />}  */}
+        </Box>
       </Modal>
     </>
   );

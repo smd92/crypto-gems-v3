@@ -37,7 +37,7 @@ const ResearchTable = () => {
 
   const addData = () => {
     try {
-      console.log("add data")
+      console.log("add data");
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -47,7 +47,7 @@ const ResearchTable = () => {
 
   const editData = () => {
     try {
-      console.log("edit data")
+      console.log("edit data");
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -70,7 +70,7 @@ const ResearchTable = () => {
 
   const tweetData = () => {
     try {
-      console.log("tweet data")
+      console.log("tweet data");
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -118,16 +118,25 @@ const ResearchTable = () => {
           setSelectedRowData={setSelectedRowData}
         />
         {/* BUTTONS FOR DB OPERATIONS */}
-        {selectedRowData.length === 0 && <ResearchModal dbOperation={"addData"}/>}
-        {selectedRowData.length === 1 && <ResearchModal dbOperation={"editData"}/>}
+        {selectedRowData.length === 0 && (
+          <ResearchModal dbOperation={"addData"} handleOperation={addData} />
+        )}
+        {selectedRowData.length === 1 && (
+          <ResearchModal dbOperation={"editData"} handleOperation={editData} />
+        )}
         {selectedRowData.length >= 1 && (
-          <ResearchModal dbOperation={"deleteData"}/>
+          <ResearchModal
+            dbOperation={"deleteData"}
+            handleOperation={deleteData}
+          />
         )}
         {selectedRowData.length === 1 &&
           selectedRowData[0].isTweeted == false && (
-            <ResearchModal dbOperation={"tweetData"}/>
+            <ResearchModal
+              dbOperation={"tweetData"}
+              handleOperation={tweetData}
+            />
           )}
-          
       </div>
     )
   );
