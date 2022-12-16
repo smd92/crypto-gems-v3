@@ -7,6 +7,7 @@ const AddButton = (props) => {
     <Button
       variant="contained"
       startIcon={<AddCircleOutlineOutlinedIcon />}
+      type={props.buttonType}
       onClick={props.onClick}
     >
       Add

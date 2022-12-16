@@ -48,10 +48,10 @@ const ResearchForm = (props) => {
   const { palette } = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const SubmitButton = (props) => props.submitButton;
+  const SubmitButton = () => props.submitButton;
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    console.log("form submitted");
+    props.callOnSubmit();
   };
 
   return (
@@ -253,7 +253,7 @@ const ResearchForm = (props) => {
             />
           </Box>
           <Box>
-            <SubmitButton type="submit" />
+            <SubmitButton />
           </Box>
         </form>
       )}

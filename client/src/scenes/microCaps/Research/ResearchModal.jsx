@@ -40,11 +40,18 @@ const ResearchModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ResearchForm />
-          {/* {isAdd && <AddButton onClick={props.handleOperation} />}
-          {isEdit && <EditButton onClick={props.handleOperation} />}
-          {isDelete && <DeleteButton onClick={props.handleOperation} />}
-          {isTweet && <TweetButton onClick={props.handleOperation} />}  */}
+          {isAdd && (
+            <ResearchForm
+              callOnSubmit={props.handleOperation}
+              submitButton={<AddButton buttonType="submit" />}
+            />
+          )}
+          {isEdit && (
+            <ResearchForm
+              callOnSubmit={props.handleOperation}
+              submitButton={<EditButton buttonType="submit" />}
+            />
+          )}
         </Box>
       </Modal>
     </>

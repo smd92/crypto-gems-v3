@@ -7,6 +7,7 @@ const EditButton = (props) => {
     <Button
       variant="contained"
       startIcon={<EditIcon />}
+      type={props.buttonType}
       onClick={props.onClick}
     >
       Edit
