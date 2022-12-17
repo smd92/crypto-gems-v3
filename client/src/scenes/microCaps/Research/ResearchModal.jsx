@@ -20,6 +20,7 @@ const style = {
 
 const ResearchModal = (props) => {
   const [open, setOpen] = React.useState(false);
+  const [formValues, setFormValues] = React.useState(null);
   const handleClose = () => setOpen(false);
 
   const isAdd = props.dbOperation === "addData";
@@ -32,9 +33,10 @@ const ResearchModal = (props) => {
       {isAdd && <AddButton onClick={() => setOpen(true)} />}
       {isEdit && (
         <EditButton
-          onClick={() => {
+          onClick={async () => {
             setOpen(true);
-            props.getDataById();
+            const data = await props.getDataById();
+            setFormValues(data.researchData);
           }}
         />
       )}
@@ -53,9 +55,10 @@ const ResearchModal = (props) => {
               submitButton={<AddButton buttonType="submit" />}
             />
           )}
-          {isEdit && (
+          {isEdit && formValues && (
             <ResearchForm
               callOnSubmit={props.handleOperation}
+              formValues={formValues}
               submitButton={<EditButton buttonType="submit" />}
             />
           )}

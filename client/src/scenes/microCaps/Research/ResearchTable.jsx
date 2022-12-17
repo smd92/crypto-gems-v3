@@ -50,8 +50,8 @@ const ResearchTable = () => {
       }
 
       let data = await response.json();
-      console.log(data)
       setError(null);
+      return data;
     } catch (err) {
       setError(err.message);
       setData(null);

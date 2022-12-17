@@ -58,7 +58,7 @@ const ResearchForm = (props) => {
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={initialValues}
+      initialValues={props.formValues ? props.formValues : initialValues}
       validationSchema={researchSchema}
     >
       {({
