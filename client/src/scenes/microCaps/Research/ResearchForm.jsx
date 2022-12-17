@@ -51,7 +51,8 @@ const ResearchForm = (props) => {
   const SubmitButton = () => props.submitButton;
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    props.callOnSubmit();
+   await props.callOnSubmit(values);
+   onSubmitProps.resetForm();
   };
 
   return (

@@ -35,9 +35,21 @@ const ResearchTable = () => {
     }
   };
 
-  const addData = () => {
+  const addData = async (data) => {
     try {
-      console.log("add data");
+      const response = await fetch("/dexGemsResearch", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error(
+          `This is an HTTP error: The status is ${response.status}`
+        );
+      }
+
+      getData();
     } catch (err) {
       setError(err.message);
       setData(null);

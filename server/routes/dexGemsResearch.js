@@ -10,6 +10,9 @@ import {
 
 const router = express.Router();
 
+/* CREATE */
+router.post("/", verifyToken, dexGemsResearch_createDexGemsResearch);
+
 /* READ */
 router.get("/", verifyToken, dexGemsResearch_getDexGemsResearch);
 
