@@ -30,7 +30,14 @@ const ResearchModal = (props) => {
   return (
     <>
       {isAdd && <AddButton onClick={() => setOpen(true)} />}
-      {isEdit && <EditButton onClick={() => setOpen(true)} />}
+      {isEdit && (
+        <EditButton
+          onClick={() => {
+            setOpen(true);
+            props.getDataById();
+          }}
+        />
+      )}
       {isDelete && <DeleteButton onClick={() => setOpen(true)} />}
       {isTweet && <TweetButton onClick={() => setOpen(true)} />}
       <Modal

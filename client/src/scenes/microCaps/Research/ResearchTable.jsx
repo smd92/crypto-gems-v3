@@ -35,13 +35,40 @@ const ResearchTable = () => {
     }
   };
 
+  const getDataById = async () => {
+    try {
+      const id = selectedRowData[0].id;
+      const response = await fetch(`/dexGemsResearch/${id}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `This is an HTTP error: The status is ${response.status}`
+        );
+      }
+
+      let data = await response.json();
+      console.log(data)
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+      setData(null);
+      console.log(err.message);
+    }
+  };
+
   const addData = async (data) => {
     try {
       const response = await fetch("/dexGemsResearch", {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
-      })
+      });
 
       if (!response.ok) {
         throw new Error(
@@ -57,9 +84,24 @@ const ResearchTable = () => {
     }
   };
 
-  const editData = () => {
+  const editData = async (data) => {
     try {
-      console.log("edit data");
+      const response = await fetch("/dexGemsResearch", {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `This is an HTTP error: The status is ${response.status}`
+        );
+      }
+
+      getData();
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -134,7 +176,7 @@ const ResearchTable = () => {
           <ResearchModal dbOperation={"addData"} handleOperation={addData} />
         )}
         {selectedRowData.length === 1 && (
-          <ResearchModal dbOperation={"editData"} handleOperation={editData} />
+          <ResearchModal dbOperation={"editData"} handleOperation={editData} getDataById={getDataById} />
         )}
         {selectedRowData.length >= 1 && (
           <ResearchModal
