@@ -17,6 +17,9 @@ router.post("/", verifyToken, dexGemsResearch_createDexGemsResearch);
 router.get("/", verifyToken, dexGemsResearch_getDexGemsResearch);
 router.get("/:id", verifyToken, dexGemsResearch_getDexGemsResearchById);
 
+/* UPDATE */
+router.patch("/:id", verifyToken, dexGemsResearch_updateDexGemsResearchById);
+
 /* DELETE */
 router.delete("/:id", verifyToken, dexGemsResearch_deleteDexGemsResearchById);
 

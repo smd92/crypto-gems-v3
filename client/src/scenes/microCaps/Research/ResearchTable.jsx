@@ -86,7 +86,8 @@ const ResearchTable = () => {
 
   const editData = async (data) => {
     try {
-      const response = await fetch("/dexGemsResearch", {
+      const id = selectedRowData[0].id;
+      const response = await fetch(`/dexGemsResearch/${id}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -134,13 +135,13 @@ const ResearchTable = () => {
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "symbol", headerName: "Symbol", width: 200 },
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "dexToolsURL", headerName: "DexTools", width: 200 },
-    { field: "tokenAddress", headerName: "Token Address", width: 200 },
-    { field: "isBuy", headerName: "Is Buy?", width: 200 },
-    { field: "dateAdded", headerName: "Date Added", width: 200 },
-    { field: "isTweeted", headerName: "Is Tweeted?", width: 200 },
+    { field: "symbol", headerName: "Symbol", width: 70 },
+    { field: "name", headerName: "Name", width: 100 },
+    { field: "dexToolsURL", headerName: "DexTools", width: 70 },
+    { field: "tokenAddress", headerName: "Token Address", width: 70 },
+    { field: "isBuy", headerName: "Is Buy?", width: 70 },
+    { field: "dateAdded", headerName: "Date Added", width: 150 },
+    { field: "isTweeted", headerName: "Is Tweeted?", width: 90 },
   ];
 
   const getRows = () => {
@@ -170,6 +171,7 @@ const ResearchTable = () => {
           rows={getRows()}
           columns={columns}
           setSelectedRowData={setSelectedRowData}
+          width="50%"
         />
         {/* BUTTONS FOR DB OPERATIONS */}
         {selectedRowData.length === 0 && (

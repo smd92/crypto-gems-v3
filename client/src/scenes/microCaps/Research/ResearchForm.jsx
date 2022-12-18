@@ -51,8 +51,9 @@ const ResearchForm = (props) => {
   const SubmitButton = () => props.submitButton;
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-   await props.callOnSubmit(values);
+   await props.crudFunction(values);
    onSubmitProps.resetForm();
+   props.closeModal();
   };
 
   return (

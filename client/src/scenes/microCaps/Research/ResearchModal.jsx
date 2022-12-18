@@ -21,7 +21,6 @@ const style = {
 const ResearchModal = (props) => {
   const [open, setOpen] = React.useState(false);
   const [formValues, setFormValues] = React.useState(null);
-  const handleClose = () => setOpen(false);
 
   const isAdd = props.dbOperation === "addData";
   const isEdit = props.dbOperation === "editData";
@@ -44,23 +43,47 @@ const ResearchModal = (props) => {
       {isTweet && <TweetButton onClick={() => setOpen(true)} />}
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           {isAdd && (
             <ResearchForm
-              callOnSubmit={props.handleOperation}
+              crudFunction={props.handleOperation}
               submitButton={<AddButton buttonType="submit" />}
+              closeModal={() => setOpen(false)}
             />
           )}
           {isEdit && formValues && (
             <ResearchForm
-              callOnSubmit={props.handleOperation}
+              crudFunction={props.handleOperation}
               formValues={formValues}
               submitButton={<EditButton buttonType="submit" />}
+              closeModal={() => setOpen(false)}
             />
+          )}
+          {isDelete && (
+            <>
+              <Typography>Do you really want to delete this data?</Typography>
+              <DeleteButton
+                onClick={() => {
+                  props.handleOperation();
+                  setOpen(false);
+                }}
+              />
+            </>
+          )}
+          {isTweet && (
+            <>
+              <Typography>Tweet this data?</Typography>
+              <TweetButton
+                onClick={() => {
+                  props.handleOperation();
+                  setOpen(false);
+                }}
+              />
+            </>
           )}
         </Box>
       </Modal>

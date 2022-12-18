@@ -54,7 +54,7 @@ const buildTweet1 = (data) => {
   return tweet;
 }; */
 
-export async function tweet_dexGemsResearch(data) {
+export async function tweetDexGemsResearch(data) {
   try {
     const client = createClient();
     const tweet1 = buildTweet1(data);
@@ -62,6 +62,6 @@ export async function tweet_dexGemsResearch(data) {
     //await client.v1.tweetThread([tweet1, tweet2]);
     await client.v1.tweet(tweet1);
   } catch (err) {
-    console.log("twitter_dexGemsResearch.js: " + err.message);
+    console.log("research.js: " + err.message);
   }
 }
