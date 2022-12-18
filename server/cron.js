@@ -790,3 +790,14 @@ schedule("* * * * *", async function cron_CoingeckoTrending24h() {
     console.log(err.message);
   }
 });*/
+
+import { getTokenInfo } from "./functions/cryptoData/apis/ethplorer.js";
+
+schedule("*/20 * * * * *", async function test() {
+  try {
+    const data = await getTokenInfo("0x1856bc58f5511269afe2ca1e89bf08cbdcd01100")
+    console.log(data)
+  } catch (err) {
+    console.log(err.message);
+  }
+});

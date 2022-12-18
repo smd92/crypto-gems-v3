@@ -11,6 +11,7 @@ import morgan from "morgan";
 /* IMPORT ROUTES */
 import authRoutes from "./routes/auth.js";
 import dexGemsResearchRoutes from "./routes/dexGemsResearch.js";
+import dexGemsRoutes from "./routes/dexGems.js";
 
 const PORT = process.env.PORT || 3001;
 
@@ -34,6 +35,7 @@ app.use(cors());
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/dexGemsResearch", dexGemsResearchRoutes);
+app.use("/dexGems", dexGemsRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));

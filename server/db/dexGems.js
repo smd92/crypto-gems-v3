@@ -50,6 +50,16 @@ export const getDexGemsByTimespan = async (startDate, endDate) => {
   }
 };
 
+//get latest dexGems
+export const getLatestDexGems = async () => {
+  try {
+    const dexGems = await DexGems.find().sort({ _id: 1 });
+    return dexGems;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 /* DELETE */
 //delete particular dexgem token from db
 export const deleteTokenById = async (id) => {
