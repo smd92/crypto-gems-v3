@@ -3,13 +3,13 @@ import DexGemsResearch from "../models/dexGemsResearch.js";
 /* CREATE */
 //save dexGems research to db
 export const createDexGemsResearch = async (data) => {
-  const dexGemsResearch = new DexGemsResearch({
-    researchData: data.researchData,
-    isTweeted: data.isTweeted,
-    //createdAt: data.createdAt, //comment in for import
-    //updatedAt: data.updatedAt, //comment in for import
-  });
   try {
+    const dexGemsResearch = new DexGemsResearch({
+      researchData: data.researchData,
+      isTweeted: data.isTweeted,
+      //createdAt: data.createdAt, //comment in for import
+      //updatedAt: data.updatedAt, //comment in for import
+    });
     await dexGemsResearch.save();
   } catch (err) {
     console.log(err.message);

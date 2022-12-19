@@ -1,6 +1,19 @@
-import { getDexGemsByDate, getLatestDexGems, deleteTokenById } from "../db/dexGems.js";
+import { getDexGemsByDate, getDexGemsByTimespan, getLatestDexGems, deleteTokenById } from "../db/dexGems.js";
 
 /* READ */
+export const dexGems_getDexGemsByTimespan = async (req, res) => {
+  try {
+    const startDate = new Date(JSON.parse(req.body.startDate));
+    const endDate = new Date(JSON.parse(req.body.endDate));
+
+    const response = await getDexGemsByTimespan(startDate, endDate);
+    res.status(200).json(response);
+  } catch (err) {
+    console.log(err.message);
+    res.status(404).json({ message: err.message });
+  }
+}
+
 export const dexGems_getLatestDexGems = async (req, res) => {
   try {
     const response = await getLatestDexGems();

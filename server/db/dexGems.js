@@ -35,7 +35,7 @@ export const getDexGemsByDate = async (date) => {
   }
 };
 
-//get dexGems of a given timeframe
+//get all dexGems of a given timeframe
 export const getDexGemsByTimespan = async (startDate, endDate) => {
   try {
     const dexGems = await DexGems.find({
@@ -53,7 +53,7 @@ export const getDexGemsByTimespan = async (startDate, endDate) => {
 //get latest dexGems
 export const getLatestDexGems = async () => {
   try {
-    const dexGems = await DexGems.find().sort({ _id: 1 });
+    const dexGems = await DexGems.find().sort({ _id: -1 }).limit(1);
     return dexGems;
   } catch (err) {
     console.log(err.message);

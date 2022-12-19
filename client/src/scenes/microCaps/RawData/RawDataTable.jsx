@@ -11,9 +11,20 @@ const RawDataTable = () => {
 
   const getData = async () => {
     try {
-      const response = await fetch("/dexGems/latest", {
+      //get data of last 7 days
+      const startDate = new Date();
+      const endDate = new Date(new Date().setDate(startDate.getDate() - 7));
+
+      const response = await fetch("/dexGems/timespan", {
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: {
+          startDate: JSON.stringify(startDate),
+          endDate: JSON.stringify(endDate),
+        },
       });
 
       if (!response.ok) {
@@ -25,6 +36,7 @@ const RawDataTable = () => {
       let data = await response.json();
       setData(data);
       setError(null);
+      console.log(data);
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -51,9 +63,7 @@ const RawDataTable = () => {
     getData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <div>RawDataTable</div>
-  )
-}
+  return <div>RawDataTable</div>;
+};
 
-export default RawDataTable
+export default RawDataTable;
