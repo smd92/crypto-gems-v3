@@ -20,10 +20,10 @@ export const createPortfolioToken = async (data) => {
 /* READ */
 //get list of portfolioTokens
 export const getPortfolioTokens = async () => {
-    try {
-        const portfolioTokens = await PortfolioToken.find();
-        return portfolioTokens;
-    } catch (err) {
-        console.log(err.message);
-    }
-}
+  try {
+    const portfolioTokens = await PortfolioToken.find();
+    return portfolioTokens;
+  } catch (err) {
+    console.log(err.message);
+  }
+};

@@ -178,7 +178,11 @@ const ResearchTable = () => {
           <ResearchModal dbOperation={"addData"} handleOperation={addData} />
         )}
         {selectedRowData.length === 1 && (
-          <ResearchModal dbOperation={"editData"} handleOperation={editData} getDataById={getDataById} />
+          <ResearchModal
+            dbOperation={"editData"}
+            handleOperation={editData}
+            getDataById={getDataById}
+          />
         )}
         {selectedRowData.length >= 1 && (
           <ResearchModal
