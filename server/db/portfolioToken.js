@@ -1,17 +1,19 @@
-import PortfolioToken from "../models/PortfolioToken";
+import PortfolioToken from "../models/PortfolioToken.js";
 
 /* CREATE */
 //save PortfolioToken to db
 export const createPortfolioToken = async (data) => {
   try {
     const portfolioToken = new PortfolioToken({
+      tokenAddress: data.tokenAddress,
+      tokenSymbol: data.tokenSymbol,
       buyAmount: data.buyAmount,
       buyPriceUSD: data.buyPriceUSD,
       buyFeeUSD: data.buyFeeUSD,
-      tokenAddress: data.tokenAddress,
-      tokenSymbol: data.tokenSymbol,
     });
     await portfolioToken.save();
+
+    return portfolioToken;
   } catch (err) {
     console.log(err.message);
   }
