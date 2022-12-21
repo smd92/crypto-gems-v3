@@ -47,7 +47,7 @@ export const updatePortfolioTokenById = async (data) => {
     const portfolioToken = await PortfolioToken.findById(data.id);
     portfolioToken = data;
     await portfolioToken.save();
-    return { success: true, message: `updated research ${data.id}` };
+    return { success: true, message: `updated portfolioToken ${data.id}` };
   } catch (err) {
     console.log(err.message);
   }
