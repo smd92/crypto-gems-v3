@@ -76,7 +76,7 @@ const ResearchTable = () => {
         );
       }
 
-      getData();
+      getData(); //update table content
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -102,7 +102,7 @@ const ResearchTable = () => {
         );
       }
 
-      getData();
+      getData(); //update table content
     } catch (err) {
       setError(err.message);
       setData(null);
