@@ -1,7 +1,9 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
-import MicroCaps from "scenes/microCaps";
+import ResearchPage from "scenes/microCaps/Research";
+import RawDataPage from "scenes/microCaps/RawData";
+import PortfolioPage from "scenes/microCaps/PortfolioTracker";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -25,8 +27,16 @@ function App() {
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route
-              path="/microcaps"
-              element={isAuth ? <MicroCaps /> : <Navigate to="/" />}
+              path="/research"
+              element={isAuth ? <ResearchPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/data"
+              element={isAuth ? <RawDataPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/portfolio"
+              element={isAuth ? <PortfolioPage /> : <Navigate to="/" />}
             />
           </Routes>
         </ThemeProvider>

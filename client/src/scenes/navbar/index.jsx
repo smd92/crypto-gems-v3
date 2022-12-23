@@ -55,7 +55,7 @@ const Navbar = () => {
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <BasicTabs />
+          <BasicTabs logout={() => dispatch(setLogout())} />
         </FlexBetween>
       ) : (
         <IconButton
@@ -105,10 +105,11 @@ const Navbar = () => {
               )}
             </IconButton>
             <MenuItem onClick={() => navigate("/home")}>Home</MenuItem>
-            <MenuItem onClick={() => navigate("/microcaps")}>
-              Microcaps
+            <MenuItem onClick={() => navigate("/research")}>Research</MenuItem>
+            <MenuItem onClick={() => navigate("/data")}>Raw Data</MenuItem>
+            <MenuItem onClick={() => navigate("/portfolio")}>
+              Portfolio
             </MenuItem>
-            <MenuItem onClick={() => navigate("/lowcaps")}>Lowcaps</MenuItem>
             <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
           </FlexBetween>
         </Box>
