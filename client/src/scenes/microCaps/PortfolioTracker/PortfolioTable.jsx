@@ -155,16 +155,36 @@ const PortfolioTable = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    data && (
-      <div>
-        <DataTable
-          rows={getRows()}
-          columns={columns}
-          setSelectedRowData={setSelectedRowData}
-          width="70%"
-        />
-      </div>
-    )
+    <div>
+      <h2>Portfolio</h2>
+      {data && (
+        <div>
+          <DataTable
+            rows={getRows()}
+            columns={columns}
+            setSelectedRowData={setSelectedRowData}
+            width="70%"
+          />
+          {/* BUTTONS FOR DB OPERATIONS */}
+          {selectedRowData.length === 0 && (
+            <PortfolioModal dbOperation={"addData"} handleOperation={addData} />
+          )}
+          {selectedRowData.length === 1 && (
+            <PortfolioModal
+              dbOperation={"editData"}
+              handleOperation={editData}
+              getDataById={getDataById}
+            />
+          )}
+          {selectedRowData.length >= 1 && (
+            <PortfolioModal
+              dbOperation={"deleteData"}
+              handleOperation={deleteData}
+            />
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
