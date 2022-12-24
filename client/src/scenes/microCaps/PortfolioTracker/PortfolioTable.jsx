@@ -131,8 +131,10 @@ const PortfolioTable = () => {
     { field: "buyAmount", headerName: "Amount", width: 150 },
     { field: "buyPriceUSD", headerName: "Buy Price USD", width: 100 },
     { field: "buyFeeUSD", headerName: "Buy Fee USD", width: 100 },
+    { field: "buyTaxPct", headerName: "Buy Tax %", width: 70 },
+    { field: "sellTaxPct", headerName: "Sell Tax %", width: 70 },
     { field: "currentPriceUSD", headerName: "Current Price USD", width: 150 },
-    { field: "currentWorthUSD", headerName: "Current Worth USD", width: 150 },
+    { field: "profitUSD", headerName: "Profit USD", width: 150 },
   ];
 
   const getRows = () => {
@@ -145,6 +147,8 @@ const PortfolioTable = () => {
         buyAmount: obj.buyAmount,
         buyPriceUSD: obj.buyPriceUSD,
         buyFeeUSD: obj.buyFeeUSD,
+        buyTaxPct: obj.buyTaxPct,
+        sellTaxPct: obj.sellTaxPct,
       };
     });
     return rows;
@@ -163,7 +167,7 @@ const PortfolioTable = () => {
             rows={getRows()}
             columns={columns}
             setSelectedRowData={setSelectedRowData}
-            width="70%"
+            width="90%"
           />
           {/* BUTTONS FOR DB OPERATIONS */}
           {selectedRowData.length === 0 && (

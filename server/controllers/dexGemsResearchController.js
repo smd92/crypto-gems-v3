@@ -17,12 +17,12 @@ export const dexGemsResearch_createDexGemsResearch = async (req, res) => {
     await check("symbol").trim().isString().run(req);
     await check("tokenAdress").trim().isString().run(req);
     await check("marketCapUSD").toInt().isInt().run(req);
-    await check("buyTaxPct").toInt().isInt().run(req);
-    await check("sellTaxPct").toInt().isInt().run(req);
+    await check("buyTaxPct").toFloat().isFloat().run(req);
+    await check("sellTaxPct").toFloat().isFloat().run(req);
     await check("dextScore").toInt().isInt().run(req);
     await check("tokenSnifferScore").toInt().isInt().run(req);
     await check("ownershipRenounced").toBoolean().isBoolean().run(req);
-    await check("liqLockedPct").toInt().isInt().run(req);
+    await check("liqLockedPct").toFloat().isFloat().run(req);
     await check("numberOfHolders").toInt().isInt().run(req);
     await check("numberOfWhales").toInt().isInt().run(req);
     await check("notes").trim().isString().run(req);

@@ -16,9 +16,11 @@ export const portfolioToken_createPortfolioToken = async (req, res) => {
     await check("tokenAddress").trim().isString().run(req);
     await check("tokenSymbol").trim().isString().run(req);
     await check("tokenName").trim().isString().run(req);
-    await check("buyAmount").toInt().isInt().run(req);
-    await check("buyPriceUSD").toInt().isInt().run(req);
-    await check("buyFeeUSD").toInt().isInt().run(req);
+    await check("buyAmount").toFloat().isFloat().run(req);
+    await check("buyPriceUSD").toFloat().isFloat().run(req);
+    await check("buyFeeUSD").toFloat().isFloat().run(req);
+    await check("buyTaxPct").toFloat().isFloat().run(req);
+    await check("sellTaxPct").toFloat().isFloat().run(req);
 
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -64,9 +66,9 @@ export const portfolioToken_updatePortfolioTokenById = async (req, res) => {
     await check("tokenAddress").trim().isString().run(req);
     await check("tokenSymbol").trim().isString().run(req);
     await check("tokenName").trim().isString().run(req);
-    await check("buyAmount").toInt().isInt().run(req);
-    await check("buyPriceUSD").toInt().isInt().run(req);
-    await check("buyFeeUSD").toInt().isInt().run(req);
+    await check("buyAmount").toFloat().isFloat().run(req);
+    await check("buyPriceUSD").toFloat().isFloat().run(req);
+    await check("buyFeeUSD").toFloat().isFloat().run(req);
 
     const result = validationResult(req);
     if (!result.isEmpty()) {

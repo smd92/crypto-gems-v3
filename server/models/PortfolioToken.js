@@ -8,6 +8,8 @@ const PortfolioTokenSchema = new mongoose.Schema(
     buyAmount: { type: Number, required: true },
     buyPriceUSD: { type: Number, required: true },
     buyFeeUSD: { type: Number, required: true },
+    buyTaxPct: { type: Number, required: true },
+    sellTaxPct: { type: Number, required: true },
   },
   {
     collection: "portfolioTokens",

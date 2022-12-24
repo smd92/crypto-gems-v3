@@ -19,6 +19,8 @@ const initialValues = {
   buyAmount: "",
   buyPriceUSD: "",
   buyFeeUSD: "",
+  buyTaxPct: "",
+  sellTaxPct: "",
 };
 
 const PortfolioForm = (props) => {
@@ -122,6 +124,26 @@ const PortfolioForm = (props) => {
               name="buyFeeUSD"
               error={Boolean(touched.buyFeeUSD) && Boolean(errors.buyFeeUSD)}
               helperText={touched.buyFeeUSD && errors.buyFeeUSD}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              label="Buy Tax %"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.buyTaxPct}
+              name="buyTaxPct"
+              error={Boolean(touched.buyTaxPct) && Boolean(errors.buyTaxPct)}
+              helperText={touched.buyTaxPct && errors.buyTaxPct}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              label="Sell Tax %"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.sellTaxPct}
+              name="sellTaxPct"
+              error={Boolean(touched.sellTaxPct) && Boolean(errors.sellTaxPct)}
+              helperText={touched.sellTaxPct && errors.sellTaxPct}
               sx={{ gridColumn: "span 2" }}
             />
           </Box>

@@ -11,6 +11,8 @@ export const createPortfolioToken = async (data) => {
       buyAmount: data.buyAmount,
       buyPriceUSD: data.buyPriceUSD,
       buyFeeUSD: data.buyFeeUSD,
+      buyTaxPct: data.buyTaxPct,
+      sellTaxPct: data.sellTaxPct,
     });
     await portfolioToken.save();
 
