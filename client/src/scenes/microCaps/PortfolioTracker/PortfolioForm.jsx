@@ -10,6 +10,9 @@ const portfolioTokenSchema = yup.object().shape({
   buyAmount: yup.number().required("required"),
   buyPriceUSD: yup.number().required("required"),
   buyFeeUSD: yup.number().required("required"),
+  buyTaxPct: yup.number().required("required"),
+  sellTaxPct: yup.number().required("required"),
+  currentPriceUSD: yup.number(),
 });
 
 const initialValues = {
@@ -21,6 +24,7 @@ const initialValues = {
   buyFeeUSD: "",
   buyTaxPct: "",
   sellTaxPct: "",
+  currentPriceUSD: "",
 };
 
 const PortfolioForm = (props) => {
@@ -144,6 +148,16 @@ const PortfolioForm = (props) => {
               name="sellTaxPct"
               error={Boolean(touched.sellTaxPct) && Boolean(errors.sellTaxPct)}
               helperText={touched.sellTaxPct && errors.sellTaxPct}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              label="Current Price USD"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.currentPriceUSD}
+              name="currentPriceUSD"
+              error={Boolean(touched.currentPriceUSD) && Boolean(errors.currentPriceUSD)}
+              helperText={touched.currentPriceUSD && errors.currentPriceUSD}
               sx={{ gridColumn: "span 2" }}
             />
           </Box>

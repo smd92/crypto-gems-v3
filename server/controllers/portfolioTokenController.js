@@ -5,6 +5,7 @@ import {
   updatePortfolioTokenById,
   deletePortfolioTokenById,
 } from "../db/portfolioToken.js";
+import { getTokenInfo } from "../functions/cryptoData/apis/ethplorer.js";
 import { check, validationResult } from "express-validator";
 
 /* CREATE */
@@ -21,6 +22,8 @@ export const portfolioToken_createPortfolioToken = async (req, res) => {
     await check("buyFeeUSD").toFloat().isFloat().run(req);
     await check("buyTaxPct").toFloat().isFloat().run(req);
     await check("sellTaxPct").toFloat().isFloat().run(req);
+    if (req.body.currentPriceUSD)
+      await check("currentPriceUSD").toFloat().isFloat().run(req);
 
     const result = validationResult(req);
     if (!result.isEmpty()) {
@@ -40,6 +43,15 @@ export const portfolioToken_createPortfolioToken = async (req, res) => {
 export const portfolioToken_getPortfolioTokens = async (req, res) => {
   try {
     const data = await getPortfolioTokens();
+
+    //get current price and map it to portfolioToken
+    for (let i = 0; i < data.length; i++) {
+      const token = data[i];
+      const tokenInfo = await getTokenInfo(token.tokenAddress);
+      if (tokenInfo.data.price)
+        token.currentPriceUSD = tokenInfo.data.price.rate;
+    }
+
     res.status(200).json(data);
   } catch (err) {
     console.log(err.message);
@@ -69,6 +81,10 @@ export const portfolioToken_updatePortfolioTokenById = async (req, res) => {
     await check("buyAmount").toFloat().isFloat().run(req);
     await check("buyPriceUSD").toFloat().isFloat().run(req);
     await check("buyFeeUSD").toFloat().isFloat().run(req);
+    await check("buyTaxPct").toFloat().isFloat().run(req);
+    await check("sellTaxPct").toFloat().isFloat().run(req);
+    if (req.body.currentPriceUSD)
+      await check("currentPriceUSD").toFloat().isFloat().run(req);
 
     const result = validationResult(req);
     if (!result.isEmpty()) {
