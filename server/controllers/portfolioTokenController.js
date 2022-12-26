@@ -90,7 +90,6 @@ export const portfolioToken_updatePortfolioTokenById = async (req, res) => {
     if (!result.isEmpty()) {
       return res.status(400).json({ errors: result.array() });
     }
-
     const response = await updatePortfolioTokenById(req.body);
     res.status(200).json(response);
   } catch (err) {

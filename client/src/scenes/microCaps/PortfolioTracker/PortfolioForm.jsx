@@ -156,7 +156,10 @@ const PortfolioForm = (props) => {
               onChange={handleChange}
               value={values.currentPriceUSD}
               name="currentPriceUSD"
-              error={Boolean(touched.currentPriceUSD) && Boolean(errors.currentPriceUSD)}
+              error={
+                Boolean(touched.currentPriceUSD) &&
+                Boolean(errors.currentPriceUSD)
+              }
               helperText={touched.currentPriceUSD && errors.currentPriceUSD}
               sx={{ gridColumn: "span 2" }}
             />

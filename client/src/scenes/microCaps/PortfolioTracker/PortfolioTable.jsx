@@ -128,11 +128,12 @@ const PortfolioTable = () => {
     { field: "tokenAddress", headerName: "Token Address", width: 150 },
     { field: "tokenSymbol", headerName: "Symbol", width: 70 },
     { field: "tokenName", headerName: "Name", width: 100 },
-    { field: "buyAmount", headerName: "Amount", width: 150 },
+    { field: "buyAmount", headerName: "Amount bought", width: 150 },
     { field: "buyPriceUSD", headerName: "Buy Price USD", width: 100 },
     { field: "buyFeeUSD", headerName: "Buy Fee USD", width: 100 },
     { field: "buyTaxPct", headerName: "Buy Tax %", width: 70 },
     { field: "sellTaxPct", headerName: "Sell Tax %", width: 70 },
+    { field: "amountAfterTax", headerName: "Amount after tax", width: 150 },
     { field: "currentPriceUSD", headerName: "Current Price USD", width: 150 },
     { field: "profitUSD", headerName: "Profit USD", width: 150 },
   ];
@@ -149,9 +150,27 @@ const PortfolioTable = () => {
         buyFeeUSD: obj.buyFeeUSD,
         buyTaxPct: obj.buyTaxPct,
         sellTaxPct: obj.sellTaxPct,
+        amountAfterTax: (function compute() {
+          const amountAfterBuyTax = obj.buyAmount / (1 + obj.buyTaxPct / 100);
+          const amountAfterSellTax =
+            amountAfterBuyTax / (1 + obj.sellTaxPct / 100);
+          return amountAfterSellTax;
+        })(),
+        currentPriceUSD: obj.currentPriceUSD,
+        profitUSD: (function compute() {
+          const amountAfterBuyTax = obj.buyAmount / (1 + obj.buyTaxPct / 100);
+          const amountAfterSellTax =
+            amountAfterBuyTax / (1 + obj.sellTaxPct / 100);
+          return amountAfterSellTax * obj.currentPriceUSD - obj.buyFeeUSD;
+        })(),
       };
     });
-    return rows;
+
+    return rows.sort((a, b) => {
+      if (a.profitUSD > b.profitUSD) return -1;
+      if (a.profitUSD < b.profitUSD) return 1;
+      if (a.profitUSD === b.profitUSD) return 0;
+    });
   };
 
   React.useEffect(() => {

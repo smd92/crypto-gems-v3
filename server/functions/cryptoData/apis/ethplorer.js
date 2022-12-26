@@ -10,7 +10,7 @@ export const getTokenInfo = async (tokenAddress) => {
         },
       }
     );
-    console.log(response);
+
     return response;
   } catch (err) {
     console.log(err.message);

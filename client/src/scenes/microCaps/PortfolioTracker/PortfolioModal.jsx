@@ -33,7 +33,7 @@ const PortfolioModal = (props) => {
           onClick={async () => {
             setOpen(true);
             const data = await props.getDataById();
-            setFormValues(data.researchData);
+            setFormValues(data);
           }}
         />
       )}

@@ -46,10 +46,12 @@ export const getPortfolioTokenById = async (id) => {
 /* UPDATE */
 export const updatePortfolioTokenById = async (data) => {
   try {
-    const portfolioToken = await PortfolioToken.findById(data.id);
-    portfolioToken = data;
+    const portfolioToken = await PortfolioToken.findById(data._id);
+    for (let key in data) {
+      portfolioToken[key] = data[key];
+    }
     await portfolioToken.save();
-    return { success: true, message: `updated portfolioToken ${data.id}` };
+    return { success: true, message: `updated portfolioToken ${data._id}` };
   } catch (err) {
     console.log(err.message);
   }
