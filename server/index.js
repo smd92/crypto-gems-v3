@@ -19,9 +19,9 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 /* CONFIGURATIONS */
-//const __filename = fileURLToPath(import.meta.url);
-//const __dirname = path.dirname(__filename);
-//app.use(express.static(path.resolve(__dirname, "../client/build")));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.resolve(__dirname, "../client/build")));
 
 dotenv.config();
 
