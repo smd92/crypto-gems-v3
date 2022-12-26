@@ -1,4 +1,4 @@
-import Gems from "../models/gems.js";
+import Gems from "../models/Gems.js";
 import { endOfDay, startOfDay } from "date-fns";
 
 /* CREATE */

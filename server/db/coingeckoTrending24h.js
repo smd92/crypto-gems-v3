@@ -1,4 +1,4 @@
-import CoingeckoTrending24h from "../models/coingeckoTrending24h.js";
+import CoingeckoTrending24h from "../models/CoingeckoTrending24h.js";
 
 /* CREATE */
 //save coingecko trending coins 24h to db

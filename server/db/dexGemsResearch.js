@@ -1,4 +1,4 @@
-import DexGemsResearch from "../models/dexGemsResearch.js";
+import DexGemsResearch from "../models/DexGemsResearch.js";
 
 /* CREATE */
 //save dexGems research to db

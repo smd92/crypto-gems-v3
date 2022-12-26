@@ -1,4 +1,4 @@
-import DexGems from "../models/dexGems.js";
+import DexGems from "../models/DexGems.js";
 import { endOfDay, startOfDay } from "date-fns";
 
 /* CREATE */
