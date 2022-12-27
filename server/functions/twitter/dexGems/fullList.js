@@ -65,7 +65,7 @@ const tweetFullList = async (data) => {
 
     //add info graphic to first tweet of thread
     const mediaId = await client.v1.uploadMedia(
-      "server/img/GemCrawler_uniswapV2Info_1600x900.png"
+      "server/public/assets/GemCrawler_uniswapV2Info_1600x900.png"
     );
     const firstTweetOfThread = thread[0];
     thread[0] = {
