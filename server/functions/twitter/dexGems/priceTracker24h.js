@@ -7,7 +7,7 @@ const _createTweetHeader = (numberOfDexGems) => {
   const threadEmoji = String.fromCodePoint(0x1f9f5);
 
   const heading = `${sirenEmoji} 24h MicroCap Strength!`;
-  const subheading1 = `Yesterday we called ${numberOfDexGems} potentially interesting MicroCaps, of which the following already surged by 10% or more! (Data from Uniswap ${unicornEmoji})`;
+  const subheading1 = `Yesterday we filtered ${numberOfDexGems} potentially interesting MicroCaps, of which the following already surged by 10% or more! (Data from Uniswap ${unicornEmoji})`;
   const subheading2 = `${threadEmoji} Price increase since then:`;
 
   const tweetHeader =
