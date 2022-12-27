@@ -6,10 +6,12 @@ const GemsSchema = new mongoose.Schema(
     maxMarketCap: { type: Number, required: true },
     gems: { type: Array, required: true },
     unmatched: { type: Array, required: true },
+    //createdAt: {type: Date}, //comment in for import
+    //updatedAt: {type: Date}, //comment in for import
   },
   {
     collection: "gems",
-    timestamps: true,
+    timestamps: true, // comment out for import
   }
 );
 

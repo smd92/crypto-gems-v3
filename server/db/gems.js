@@ -9,6 +9,8 @@ const gemsCreate = async (data) => {
     maxMarketCap: data.maxMarketCap,
     gems: data.gems,
     unmatched: data.unmatched,
+    //createdAt: data.createdAt, //comment in for import
+    //updatedAt: data.updatedAt, //comment in for import
   });
   try {
     await gems.save();

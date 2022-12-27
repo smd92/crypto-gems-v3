@@ -397,7 +397,7 @@ schedule("30 16 * * *", async function cron_gems_developerData() {
 });
 
 //get uniswap data
-schedule("1 15 * * *", async function cron_dexGems_uniswap() {
+schedule("0 17 * * *", async function cron_dexGems_uniswap() {
   try {
     //get WETH price to calculate USD price of token0
     const priceWETH = await getTokenPriceUSD(
@@ -689,10 +689,10 @@ schedule("30 20 * * SUN", async function cron_gems_weeklyWinners() {
     console.log("Error at cron_gems_weeklyWinners: " + err.message);
   }
 });
-/*
+
 import fs from "fs";
 import { createDexGemsResearch } from "./db/dexGemsResearch.js";
-
+/*
 schedule("* * * * *", async function cron_importDexGems() {
   try {
     const dataRaw = fs.readFileSync(
@@ -716,23 +716,23 @@ schedule("* * * * *", async function cron_importDexGems() {
   } catch (err) {
     console.log(err.message);
   }
-});
-
+});*/
+/*
 schedule("* * * * *", async function cron_importGems() {
   try {
     const dataRaw = fs.readFileSync(
-      "D:/Program Files (x86)/github/crypto-gems-v3/server/dexGems.json"
+      "D:/Program Files (x86)/github/crypto-gems-v3/server/gems.json"
     );
     const dataParsed = JSON.parse(dataRaw);
     dataParsed.forEach((document) => {
       const d = document.timestamp["$date"]["$numberLong"];
       const date = new Date(d * 1000);
       console.log(date)
-      dexGemsCreate({
-        dexGems: document.dexGems,
-        quoteTokenAdress: document.quoteTokenAdress,
-        quoteTokenSymbol: document.quoteTokenSymbol,
-        dex: document.dex,
+      gemsCreate({
+        minMarketCap: document.minMarketCap,
+        maxMarketCap: document.maxMarketCap,
+        gems: document.gems,
+        unmatched: document.unmatched,
         createdAt: d,
         updatedAt: d,
       });
@@ -741,8 +741,8 @@ schedule("* * * * *", async function cron_importGems() {
   } catch (err) {
     console.log(err.message);
   }
-});
-
+});*/
+/*
 schedule("* * * * *", async function cron_importDexGemsResearch() {
   try {
     const dataRaw = fs.readFileSync(
@@ -764,23 +764,21 @@ schedule("* * * * *", async function cron_importDexGemsResearch() {
   } catch (err) {
     console.log(err.message);
   }
-});
+});*/
 
-schedule("* * * * *", async function cron_CoingeckoTrending24h() {
+/*
+schedule("*20 * * * * *", async function cron_CoingeckoTrending24h() {
   try {
     const dataRaw = fs.readFileSync(
-      "D:/Program Files (x86)/github/crypto-gems-v3/server/dexGems.json"
+      "D:/Program Files (x86)/github/crypto-gems-v3/server/coingeckoTrending24h.json"
     );
     const dataParsed = JSON.parse(dataRaw);
     dataParsed.forEach((document) => {
       const d = document.timestamp["$date"]["$numberLong"];
       const date = new Date(d * 1000);
       console.log(date)
-      dexGemsCreate({
-        dexGems: document.dexGems,
-        quoteTokenAdress: document.quoteTokenAdress,
-        quoteTokenSymbol: document.quoteTokenSymbol,
-        dex: document.dex,
+      coingeckoTrending24hCreate({
+        coins: document.coins,
         createdAt: d,
         updatedAt: d,
       });
@@ -789,11 +787,12 @@ schedule("* * * * *", async function cron_CoingeckoTrending24h() {
   } catch (err) {
     console.log(err.message);
   }
-});*/
+});
 
+/*
 import { getTokenInfo } from "./functions/cryptoData/apis/ethplorer.js";
 
-schedule("*/20 * * * * *", async function test() {
+schedule("*20 * * * * *", async function test() {
   try {
     const data = await getTokenInfo(
       "0x1856bc58f5511269afe2ca1e89bf08cbdcd01100"
@@ -802,4 +801,4 @@ schedule("*/20 * * * * *", async function test() {
   } catch (err) {
     console.log(err.message);
   }
-});
+});*/
