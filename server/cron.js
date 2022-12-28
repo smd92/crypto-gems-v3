@@ -49,6 +49,7 @@ import { tweetDexGemsGainers24h } from "./functions/twitter/dexGems/priceTracker
 import { tweetDexGemsGainers7d } from "./functions/twitter/dexGems/priceTracker7d.js";
 import { tweetGemsWeeklyWinners } from "./functions/twitter/gems/priceTracker7d.js";
 import { tweetHoldersCount } from "./functions/twitter/dexGems/holdersCount.js";
+import { tweetLiqToMcap } from "./functions/twitter/dexGems/liqToMcap.js";
 
 schedule("0 8 * * *", async function cron_coingeckoTrending() {
   try {
@@ -565,7 +566,47 @@ schedule("0 19 * * *", async function cron_dexGems_fullList() {
   }
 });
 
-schedule("30 19 * * *", async function cron_dexGems_holders() {
+schedule("30 19 * * *", async function cron_dexGems_liqToMcapRatio() {
+  try {
+    //get today's dexgems
+    const today = new Date();
+    const data = await getDexGemsByDate(today);
+    const dexGems = [];
+    data.forEach((document) => {
+      document.dexGems.forEach((dexGem) => dexGems.push(dexGem));
+    });
+
+    const filtered = dexGems.filter((token) => {
+      return token.liqToMcap >= 0.1 && token.liqToMcap <= 0.15;
+    });
+
+    const sortedByLiqToMcapRatio = filtered.sort((a, b) => {
+      if (a.liqToMcap > b.liqToMcap) return -1;
+      if (a.liqToMcap < b.liqToMcap) return 1;
+      if (a.liqToMcap === b.liqToMcap) return 0;
+    });
+
+    //stop process if there are no results
+    if (sortedByLiqToMcapRatio.length === 0) return;
+    //format data for tweet
+    const dataForTweet = sortedByLiqToMcapRatio.map((token) => {
+      return {
+        symbol: token.symbol,
+        name: token.name,
+        liqToMcap:
+          Math.round((token.liqToMcap * 100 + Number.EPSILON) * 100) / 100,
+      };
+    });
+
+    //tweet data
+    await tweetLiqToMcap(dataForTweet, dexGems.length);
+    console.log("successfully tweeted liq to mcap ratio of today's microcaps");
+  } catch (err) {
+    console.log("Error at cron_dexGems_liqToMcapRatio: " + err.message);
+  }
+});
+
+schedule("0 20 * * *", async function cron_dexGems_holders() {
   try {
     //get today's dexgems
     const today = new Date();
@@ -588,16 +629,16 @@ schedule("30 19 * * *", async function cron_dexGems_holders() {
       }
     }
 
-    const filteredAndSortedByHoldersCount = mappedHolders.sort((a, b) => {
+    const sortedByHoldersCount = mappedHolders.sort((a, b) => {
       if (a.holdersCount > b.holdersCount) return -1;
       if (a.holdersCount < b.holdersCount) return 1;
       if (a.holdersCount === b.holdersCount) return 0;
     });
 
     //stop process if there are no results
-    if (filteredAndSortedByHoldersCount.length === 0) return;
+    if (sortedByHoldersCount.length === 0) return;
     //format data for tweet
-    const dataForTweet = filteredAndSortedByHoldersCount.map((token) => {
+    const dataForTweet = sortedByHoldersCount.map((token) => {
       return {
         symbol: token.symbol,
         name: token.name,
@@ -608,11 +649,11 @@ schedule("30 19 * * *", async function cron_dexGems_holders() {
     await tweetHoldersCount(dataForTweet, dexGems.length);
     console.log("successfully tweeted holders count of today's microcaps");
   } catch (err) {
-    console.log("Error at cron_dexGems_gainers24h: " + err.message);
+    console.log("Error at cron_dexGems_holders: " + err.message);
   }
 });
 
-schedule("0 20 * * *", async function cron_dexGems_gainers24h() {
+schedule("30 20 * * *", async function cron_dexGems_gainers24h() {
   try {
     //get yesterday's dexgems
     const today = new Date();
