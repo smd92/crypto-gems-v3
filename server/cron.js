@@ -543,7 +543,7 @@ schedule("0 17 * * *", async function cron_dexGems_uniswap() {
   }
 });
 
-schedule("0 19 * * *", async function cron_dexGems_fullList() {
+schedule("30 18 * * *", async function cron_dexGems_fullList() {
   try {
     const today = new Date();
     const dbResult = await getDexGemsByDate(today);
@@ -566,7 +566,7 @@ schedule("0 19 * * *", async function cron_dexGems_fullList() {
   }
 });
 
-schedule("30 19 * * *", async function cron_dexGems_liqToMcapRatio() {
+schedule("45 18 * * *", async function cron_dexGems_liqToMcapRatio() {
   try {
     //get today's dexgems
     const today = new Date();
@@ -606,7 +606,7 @@ schedule("30 19 * * *", async function cron_dexGems_liqToMcapRatio() {
   }
 });
 
-schedule("0 20 * * *", async function cron_dexGems_holders() {
+schedule("0 19 * * *", async function cron_dexGems_holders() {
   try {
     //get today's dexgems
     const today = new Date();
@@ -653,7 +653,7 @@ schedule("0 20 * * *", async function cron_dexGems_holders() {
   }
 });
 
-schedule("30 20 * * *", async function cron_dexGems_gainers24h() {
+schedule("15 19 * * *", async function cron_dexGems_gainers24h() {
   try {
     //get yesterday's dexgems
     const today = new Date();
@@ -692,7 +692,7 @@ schedule("30 20 * * *", async function cron_dexGems_gainers24h() {
   }
 });
 
-schedule("0 21 * * *", async function cron_dexGems_gainers7d() {
+schedule("30 20 * * *", async function cron_dexGems_gainers7d() {
   try {
     //get yesterday's dexgems
     const today = new Date();

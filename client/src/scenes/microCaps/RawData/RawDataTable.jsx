@@ -28,7 +28,6 @@ const RawDataTable = () => {
       let data = await response.json();
       setData(data[0].dexGems);
       setError(null);
-      console.log(data)
     } catch (err) {
       setError(err.message);
       setData(null);
