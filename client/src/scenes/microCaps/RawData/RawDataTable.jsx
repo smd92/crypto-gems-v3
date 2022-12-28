@@ -11,19 +11,11 @@ const RawDataTable = () => {
 
   const getData = async () => {
     try {
-      //get data of last 7 days
-      const startDate = new Date();
-      const endDate = new Date(new Date().setDate(startDate.getDate() - 7));
-
-      const response = await fetch("/dexGems/timespan", {
+      const response = await fetch("/dexGems/latest", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-        },
-        body: {
-          startDate: JSON.stringify(startDate),
-          endDate: JSON.stringify(endDate),
         },
       });
 
@@ -34,9 +26,9 @@ const RawDataTable = () => {
       }
 
       let data = await response.json();
-      setData(data);
+      setData(data[0].dexGems);
       setError(null);
-      console.log(data);
+      console.log(data)
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -59,11 +51,46 @@ const RawDataTable = () => {
       .catch((err) => console.log("Unable to delete data: " + err.message));
   };
 
+  const columns = [
+    { field: "id", headerName: "ID", width: 150 },
+    { field: "symbol", headerName: "Symbol", width: 150 },
+    { field: "name", headerName: "Name", width: 150 },
+    { field: "marketCapUSD", headerName: "Marketcap USD", width: 150 },
+    { field: "totalLiquidityUSD", headerName: "Total Liq USD", width: 150 },
+    { field: "liqToMcap", headerName: "Liq to Mcap", width: 150 },
+  ];
+
+  const getRows = () => {
+    const rows = data.map((obj) => {
+      return {
+        id: obj.id,
+        symbol: obj.symbol,
+        name: obj.name,
+        marketCapUSD: obj.marketCapUSD,
+        totalLiquidityUSD: obj.totalLiquidityUSD,
+        liqToMcap: obj.liqToMcap,
+      };
+    });
+    return rows;
+  };
+
   React.useEffect(() => {
     getData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <div>RawDataTable</div>;
+  return (
+    data && (
+      <div>
+        <DataTable
+          rows={getRows()}
+          columns={columns}
+          setSelectedRowData={setSelectedRowData}
+          width="90%"
+        />
+        ;
+      </div>
+    )
+  );
 };
 
 export default RawDataTable;
