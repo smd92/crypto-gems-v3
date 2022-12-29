@@ -51,7 +51,7 @@ import { tweetGemsWeeklyWinners } from "./functions/twitter/gems/priceTracker7d.
 import { tweetHoldersCount } from "./functions/twitter/dexGems/holdersCount.js";
 import { tweetLiqToMcap } from "./functions/twitter/dexGems/liqToMcap.js";
 
-schedule("0 8 * * *", async function cron_coingeckoTrending() {
+schedule("0 7 * * *", async function cron_coingeckoTrending() {
   try {
     //get data
     const data = await getTrendingCoins();
@@ -75,7 +75,7 @@ schedule("0 8 * * *", async function cron_coingeckoTrending() {
   }
 });
 
-schedule("0 9 * * *", async function cron_lunarCrushCoinfOfTheDay() {
+schedule("0 8 * * *", async function cron_lunarCrushCoinfOfTheDay() {
   try {
     //get coin of the day
     const response = await getLunarCrushData(
@@ -94,7 +94,7 @@ schedule("0 9 * * *", async function cron_lunarCrushCoinfOfTheDay() {
   }
 });
 
-schedule("30 9 * * *", async function cron_lunarCrushNftOfTheDay() {
+schedule("30 8 * * *", async function cron_lunarCrushNftOfTheDay() {
   try {
     //get nft of the day
     const response = await getLunarCrushData(
@@ -113,7 +113,7 @@ schedule("30 9 * * *", async function cron_lunarCrushNftOfTheDay() {
   }
 });
 
-schedule("0 10 * * *", async function cron_gems_gainers24h() {
+schedule("0 9 * * *", async function cron_gems_gainers24h() {
   try {
     //get yesterday's gems
     const data = await getSavedGemsDaysAgo(1);
@@ -152,7 +152,7 @@ schedule("0 10 * * *", async function cron_gems_gainers24h() {
   }
 });
 
-schedule("0 11 * * *", async function cron_gems_ultraLowCaps() {
+schedule("30 9 * * *", async function cron_gems_ultraLowCaps() {
   try {
     //get data
     const data = await getGemsList(1_000_000, 5_000_000);
@@ -164,7 +164,7 @@ schedule("0 11 * * *", async function cron_gems_ultraLowCaps() {
   }
 });
 
-schedule("30 11 * * *", async function cron_gems_lowCaps() {
+schedule("0 10 * * *", async function cron_gems_lowCaps() {
   try {
     //get data
     const data = await getGemsList(5_000_000, 10_000_000);
@@ -176,7 +176,7 @@ schedule("30 11 * * *", async function cron_gems_lowCaps() {
   }
 });
 
-schedule("0 12 * * *", async function cron_gems_gainers30d() {
+schedule("30 10 * * *", async function cron_gems_gainers30d() {
   try {
     //get date of 30 days ago
     const today = new Date();
@@ -217,7 +217,7 @@ schedule("0 12 * * *", async function cron_gems_gainers30d() {
   }
 });
 
-schedule("0 13 * * *", async function cron_gems_teaser() {
+schedule("0 11 * * *", async function cron_gems_teaser() {
   try {
     const today = new Date();
     //get data
@@ -238,7 +238,7 @@ schedule("0 13 * * *", async function cron_gems_teaser() {
   }
 });
 
-schedule("30 13 * * *", async function cron_gems_fullList() {
+schedule("30 11 * * *", async function cron_gems_fullList() {
   try {
     const today = new Date();
     //get data
@@ -258,7 +258,7 @@ schedule("30 13 * * *", async function cron_gems_fullList() {
   }
 });
 
-schedule("0 14 * * *", async function cron_gems_supplyRatio() {
+schedule("0 12 * * *", async function cron_gems_supplyRatio() {
   try {
     const today = new Date();
     //get data
@@ -300,7 +300,7 @@ schedule("0 14 * * *", async function cron_gems_supplyRatio() {
   }
 });
 
-schedule("0 15 * * *", async function cron_gems_priceGainers24hTop5() {
+schedule("30 12 * * *", async function cron_gems_priceGainers24hTop5() {
   try {
     const today = new Date();
     //get data
@@ -336,7 +336,7 @@ schedule("0 15 * * *", async function cron_gems_priceGainers24hTop5() {
   }
 });
 
-schedule("30 15 * * *", async function cron_gems_maxSupply() {
+schedule("0 13 * * *", async function cron_gems_maxSupply() {
   try {
     const today = new Date();
     //get data
@@ -368,7 +368,7 @@ schedule("30 15 * * *", async function cron_gems_maxSupply() {
   }
 });
 
-schedule("30 16 * * *", async function cron_gems_developerData() {
+schedule("30 13 * * *", async function cron_gems_developerData() {
   try {
     const today = new Date();
     //get data
@@ -400,7 +400,7 @@ schedule("30 16 * * *", async function cron_gems_developerData() {
 });
 
 //get uniswap data
-schedule("0 17 * * *", async function cron_dexGems_uniswap() {
+schedule("0 14 * * *", async function cron_dexGems_uniswap() {
   try {
     //get WETH price to calculate USD price of token0
     const priceWETH = await getTokenPriceUSD(
@@ -543,7 +543,7 @@ schedule("0 17 * * *", async function cron_dexGems_uniswap() {
   }
 });
 
-schedule("30 18 * * *", async function cron_dexGems_fullList() {
+schedule("30 15 * * *", async function cron_dexGems_fullList() {
   try {
     const today = new Date();
     const dbResult = await getDexGemsByDate(today);
@@ -566,7 +566,7 @@ schedule("30 18 * * *", async function cron_dexGems_fullList() {
   }
 });
 
-schedule("45 18 * * *", async function cron_dexGems_liqToMcapRatio() {
+schedule("0 16 * * *", async function cron_dexGems_liqToMcapRatio() {
   try {
     //get today's dexgems
     const today = new Date();
@@ -606,7 +606,7 @@ schedule("45 18 * * *", async function cron_dexGems_liqToMcapRatio() {
   }
 });
 
-schedule("0 19 * * *", async function cron_dexGems_holders() {
+schedule("0 17 * * *", async function cron_dexGems_holders() {
   try {
     //get today's dexgems
     const today = new Date();
@@ -653,7 +653,7 @@ schedule("0 19 * * *", async function cron_dexGems_holders() {
   }
 });
 
-schedule("15 19 * * *", async function cron_dexGems_gainers24h() {
+schedule("0 18 * * *", async function cron_dexGems_gainers24h() {
   try {
     //get yesterday's dexgems
     const today = new Date();
@@ -692,7 +692,7 @@ schedule("15 19 * * *", async function cron_dexGems_gainers24h() {
   }
 });
 
-schedule("30 20 * * *", async function cron_dexGems_gainers7d() {
+schedule("0 19 * * *", async function cron_dexGems_gainers7d() {
   try {
     //get yesterday's dexgems
     const today = new Date();
