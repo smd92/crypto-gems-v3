@@ -1,6 +1,20 @@
 import React from "react";
+import { Modal } from "@mui/material";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
+import DeleteButton from "components/Buttons/DeleteButton";
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const RawDataTable = () => {
   const [data, setData] = React.useState(null);
@@ -8,6 +22,8 @@ const RawDataTable = () => {
   const [error, setError] = React.useState(null);
   const [selectedRowData, setSelectedRowData] = React.useState([]);
   const token = useSelector((state) => state.token);
+  //modal
+  const [open, setOpen] = React.useState(false);
 
   const getData = async () => {
     try {
@@ -26,8 +42,9 @@ const RawDataTable = () => {
       }
 
       let data = await response.json();
-      setData(data[0].dexGems);
+      setData(data);
       setError(null);
+      console.log(data)
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -57,6 +74,7 @@ const RawDataTable = () => {
     { field: "marketCapUSD", headerName: "Marketcap USD", width: 150 },
     { field: "totalLiquidityUSD", headerName: "Total Liq USD", width: 150 },
     { field: "liqToMcap", headerName: "Liq to Mcap", width: 150 },
+    { field: "priceChangePct", headerName: "Price Change %", width: 150 },
   ];
 
   const getRows = () => {
@@ -68,6 +86,7 @@ const RawDataTable = () => {
         marketCapUSD: obj.marketCapUSD,
         totalLiquidityUSD: obj.totalLiquidityUSD,
         liqToMcap: obj.liqToMcap,
+        priceChangePct: obj.priceChangePct,
       };
     });
     return rows;

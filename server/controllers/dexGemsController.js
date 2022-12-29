@@ -4,6 +4,7 @@ import {
   getLatestDexGems,
   deleteTokenById,
 } from "../db/dexGems.js";
+import { getPriceChange } from "../functions/cryptoData/dexGems/priceChange.js";
 
 /* READ */
 export const dexGems_getDexGemsByTimespan = async (req, res) => {
@@ -22,7 +23,9 @@ export const dexGems_getDexGemsByTimespan = async (req, res) => {
 export const dexGems_getLatestDexGems = async (req, res) => {
   try {
     const response = await getLatestDexGems();
-    res.status(200).json(response);
+    const dexGems = response[0].dexGems;
+    const mappedPriceChange = await getPriceChange(dexGems);
+    res.status(200).json(mappedPriceChange);
   } catch (err) {
     console.log(err.message);
     res.status(404).json({ message: err.message });
