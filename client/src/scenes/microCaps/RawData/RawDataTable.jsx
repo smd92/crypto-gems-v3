@@ -74,6 +74,7 @@ const RawDataTable = () => {
     { field: "marketCapUSD", headerName: "Marketcap USD", width: 150 },
     { field: "totalLiquidityUSD", headerName: "Total Liq USD", width: 150 },
     { field: "liqToMcap", headerName: "Liq to Mcap", width: 150 },
+    { field: "createdAt", headerName: "Created at", width: 150 },
     { field: "priceChangePct", headerName: "Price Change %", width: 150 },
   ];
 
@@ -86,6 +87,12 @@ const RawDataTable = () => {
         marketCapUSD: obj.marketCapUSD,
         totalLiquidityUSD: obj.totalLiquidityUSD,
         liqToMcap: obj.liqToMcap,
+        createdAt: (function compute() {
+          const unixTimestamp = obj.createdAtTimestamp;
+          const milliseconds = unixTimestamp * 1000;
+          const date = new Date(milliseconds);
+          return date.toLocaleString();
+        })(),
         priceChangePct: obj.priceChangePct,
       };
     });
