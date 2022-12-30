@@ -1,20 +1,7 @@
 import React from "react";
-import { Modal } from "@mui/material";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
-import DeleteButton from "components/Buttons/DeleteButton";
-
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import RawDataModal from "./RawDataModal";
 
 const RawDataTable = () => {
   const [data, setData] = React.useState(null);
@@ -22,8 +9,6 @@ const RawDataTable = () => {
   const [error, setError] = React.useState(null);
   const [selectedRowData, setSelectedRowData] = React.useState([]);
   const token = useSelector((state) => state.token);
-  //modal
-  const [open, setOpen] = React.useState(false);
 
   const getData = async () => {
     try {
@@ -44,7 +29,7 @@ const RawDataTable = () => {
       let data = await response.json();
       setData(data);
       setError(null);
-      console.log(data)
+      console.log(data);
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -112,7 +97,12 @@ const RawDataTable = () => {
           setSelectedRowData={setSelectedRowData}
           width="90%"
         />
-        ;
+        {selectedRowData.length >= 1 && (
+          <RawDataModal
+            dbOperation={"deleteData"}
+            handleOperation={deleteData}
+          />
+        )}
       </div>
     )
   );
