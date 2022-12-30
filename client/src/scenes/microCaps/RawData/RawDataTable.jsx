@@ -1,4 +1,5 @@
 import React from "react";
+import { Box, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
 import RawDataModal from "./RawDataModal";
@@ -89,22 +90,29 @@ const RawDataTable = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    data && (
-      <div>
-        <DataTable
-          rows={getRows()}
-          columns={columns}
-          setSelectedRowData={setSelectedRowData}
-          width="90%"
-        />
-        {selectedRowData.length >= 1 && (
-          <RawDataModal
-            dbOperation={"deleteData"}
-            handleOperation={deleteData}
+    <div>
+      {loading && (
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      )}
+      {data && (
+        <div>
+          <DataTable
+            rows={getRows()}
+            columns={columns}
+            setSelectedRowData={setSelectedRowData}
+            width="90%"
           />
-        )}
-      </div>
-    )
+          {selectedRowData.length >= 1 && (
+            <RawDataModal
+              dbOperation={"deleteData"}
+              handleOperation={deleteData}
+            />
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 

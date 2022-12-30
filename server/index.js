@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-//import "./cron.js";
+import "./cron.js";
 /* IMPORT ROUTES */
 import authRoutes from "./routes/auth.js";
 import dexGemsResearchRoutes from "./routes/dexGemsResearch.js";
