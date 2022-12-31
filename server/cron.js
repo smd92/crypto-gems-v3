@@ -527,6 +527,17 @@ schedule("0 14 * * *", async function cron_dexGems_uniswap() {
       }
     });
 
+    //map number of holders to token
+    for (let m = 0; m < filteredByVolume.length; m++) {
+      const token = filteredByVolume[m];
+      const tokenAddress = token.id;
+      const tokenInfo = await getTokenInfo(tokenAddress);
+      const holdersCount = tokenInfo.data.holdersCount;
+      if (holdersCount) {
+        token.holdersCount = holdersCount;
+      }
+    }
+
     //save pairs to db
     const dataForDB = {
       dexGems: filteredByVolume,
@@ -652,6 +663,51 @@ schedule("0 17 * * *", async function cron_dexGems_holders() {
     console.log("Error at cron_dexGems_holders: " + err.message);
   }
 });
+
+/*
+schedule("30 17 * * *", async function cron_dexGems_holdersCountGainers24h() {
+  try {
+    //get yesterday's dexgems
+    const today = new Date();
+    const yesterday = new Date(new Date().setDate(today.getDate() - 1));
+    const data = await getDexGemsByDate(yesterday);
+    const dexGems = [];
+    data.forEach((document) => {
+      document.dexGems.forEach((dexGem) => dexGems.push(dexGem));
+    });
+
+    const mappedHoldersCountChange = [];
+
+    for (let i = 0; i < dexGems.length; i++) {
+      const token = dexGems[i];
+      const holdersCountOld = token.holdersCount;
+    }
+
+    const filteredAndSortedByPriceChange = mappedPriceChange
+      .filter((dexGem) => dexGem.priceChangePct >= 10)
+      .sort((a, b) => {
+        if (a.priceChangePct > b.priceChangePct) return -1;
+        if (a.priceChangePct < b.priceChangePct) return 1;
+        if (a.priceChangePct === b.priceChangePct) return 0;
+      });
+
+    //stop process if there are no results
+    if (filteredAndSortedByPriceChange.length === 0) return;
+    //format data for tweet
+    const dataForTweet = filteredAndSortedByPriceChange.map((dexGem) => {
+      return {
+        symbol: dexGem.symbol,
+        name: dexGem.name,
+        priceChangePct: dexGem.priceChangePct,
+      };
+    });
+    //tweet data
+    await tweetDexGemsGainers24h(dataForTweet, dexGems.length);
+    console.log("successfully tweeted dexGem gainers 24h (>10%)"); 
+  } catch (err) {
+    console.log("Error at cron_dexGems_gainers24h: " + err.message);
+  }
+});*/
 
 schedule("0 18 * * *", async function cron_dexGems_gainers24h() {
   try {
