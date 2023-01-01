@@ -7,12 +7,13 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-//import "./cron.js";
+import "./cron.js";
 /* IMPORT ROUTES */
 import authRoutes from "./routes/auth.js";
 import dexGemsResearchRoutes from "./routes/dexGemsResearch.js";
 import dexGemsRoutes from "./routes/dexGems.js";
 import portfolioTokenRoutes from "./routes/portfolioToken.js";
+import twitterRoutes from "./routes/twitter.js";
 
 const PORT = process.env.PORT || 3001;
 
@@ -38,6 +39,7 @@ app.use("/auth", authRoutes);
 app.use("/dexGemsResearch", dexGemsResearchRoutes);
 app.use("/dexGems", dexGemsRoutes);
 app.use("/portfolioToken", portfolioTokenRoutes);
+app.use("/twitter", twitterRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));

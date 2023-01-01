@@ -12,6 +12,7 @@ const ResearchTable = () => {
 
   const getData = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/dexGemsResearch", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -123,9 +124,24 @@ const ResearchTable = () => {
       .catch((err) => console.log("Unable to delete data: " + err.message));
   };
 
-  const tweetData = () => {
+  const tweetData = async () => {
     try {
-      console.log(selectedRowData);
+      const id = selectedRowData[0].id;
+      const response = await fetch(`twitter/dexGemsResearch/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `This is an HTTP error: The status is ${response.status}`
+        );
+      }
+
+      getData(); //update table content
     } catch (err) {
       setError(err.message);
       setData(null);

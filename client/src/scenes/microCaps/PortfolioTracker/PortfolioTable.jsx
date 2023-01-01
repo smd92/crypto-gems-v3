@@ -12,6 +12,7 @@ const PortfolioTable = () => {
 
   const getData = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/portfolioToken", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

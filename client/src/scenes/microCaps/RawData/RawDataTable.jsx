@@ -13,6 +13,7 @@ const RawDataTable = () => {
 
   const getData = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/dexGems/latest", {
         method: "GET",
         headers: {
