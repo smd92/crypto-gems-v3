@@ -1,9 +1,9 @@
 import express from "express";
 import { verifyToken } from "../middleware/auth.js";
-import router from "./dexGemsResearch.js";
+import { twitter_tweetDexGemsResearch } from "../controllers/twitterController.js";
 
 const router = express.Router();
 
-router.patch("/dexGemsResearch/:id", verifyToken);
+router.patch("/dexGemsResearch/:id", verifyToken, twitter_tweetDexGemsResearch);
 
 export default router;

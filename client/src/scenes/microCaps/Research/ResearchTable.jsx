@@ -125,7 +125,7 @@ const ResearchTable = () => {
 
   const tweetData = () => {
     try {
-      console.log("tweet data");
+      console.log(selectedRowData);
     } catch (err) {
       setError(err.message);
       setData(null);
