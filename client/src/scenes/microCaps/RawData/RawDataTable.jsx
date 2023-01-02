@@ -3,6 +3,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
 import RawDataModal from "./RawDataModal";
+import BasicDatePicker from "components/BasicDatePicker";
 
 const RawDataTable = () => {
   const [data, setData] = React.useState(null);
@@ -99,6 +100,7 @@ const RawDataTable = () => {
       )}
       {data && (
         <div>
+          <BasicDatePicker />
           <DataTable
             rows={getRows()}
             columns={columns}
