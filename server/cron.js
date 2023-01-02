@@ -663,7 +663,6 @@ schedule("0 17 * * *", async function cron_dexGems_holders() {
     console.log("Error at cron_dexGems_holders: " + err.message);
   }
 });
-
 /*
 schedule("30 17 * * *", async function cron_dexGems_holdersCountGainers24h() {
   try {
@@ -681,33 +680,38 @@ schedule("30 17 * * *", async function cron_dexGems_holdersCountGainers24h() {
     for (let i = 0; i < dexGems.length; i++) {
       const token = dexGems[i];
       const holdersCountOld = token.holdersCount;
+      const tokenInfo = await getTokenInfo(token.id);
+      const holdersCountNew = tokenInfo.data.holdersCount;
+      const holdersCountChangePct24h = (holdersCountNew / holdersCountOld - 1) * 100;
+      token.holdersCountChangePct24h = holdersCountChangePct24h;
+      mappedHoldersCountChange.push(token);
     }
 
-    const filteredAndSortedByPriceChange = mappedPriceChange
-      .filter((dexGem) => dexGem.priceChangePct >= 10)
+    const sortedByHoldersCount = mappedHoldersCountChange
       .sort((a, b) => {
-        if (a.priceChangePct > b.priceChangePct) return -1;
-        if (a.priceChangePct < b.priceChangePct) return 1;
-        if (a.priceChangePct === b.priceChangePct) return 0;
+        if (a.holdersCountChangePct24h > b.holdersCountChangePct24h) return -1;
+        if (a.holdersCountChangePct24h < b.holdersCountChangePct24h) return 1;
+        if (a.holdersCountChangePct24h === b.holdersCountChangePct24h) return 0;
       });
 
     //stop process if there are no results
-    if (filteredAndSortedByPriceChange.length === 0) return;
+    if (sortedByHoldersCount.length === 0) return;
     //format data for tweet
-    const dataForTweet = filteredAndSortedByPriceChange.map((dexGem) => {
+    const dataForTweet = sortedByHoldersCount.map((token) => {
       return {
-        symbol: dexGem.symbol,
-        name: dexGem.name,
-        priceChangePct: dexGem.priceChangePct,
+        symbol: token.symbol,
+        name: token.name,
+        holdersCountChangePct24h: token.holdersCountChangePct24h,
       };
     });
     //tweet data
-    await tweetDexGemsGainers24h(dataForTweet, dexGems.length);
-    console.log("successfully tweeted dexGem gainers 24h (>10%)"); 
+    //await tweetDexGemsGainers24h(dataForTweet, dexGems.length);
+    console.log(dataForTweet);
+    console.log("successfully tweeted holders gainers 24h");
   } catch (err) {
     console.log("Error at cron_dexGems_gainers24h: " + err.message);
   }
-});*/
+}); */
 
 schedule("0 18 * * *", async function cron_dexGems_gainers24h() {
   try {
