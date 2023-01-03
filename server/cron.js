@@ -50,6 +50,7 @@ import { tweetDexGemsGainers7d } from "./functions/twitter/dexGems/priceTracker7
 import { tweetGemsWeeklyWinners } from "./functions/twitter/gems/priceTracker7d.js";
 import { tweetHoldersCount } from "./functions/twitter/dexGems/holdersCount.js";
 import { tweetLiqToMcap } from "./functions/twitter/dexGems/liqToMcap.js";
+import { tweetHoldersCountChange24h } from "./functions/twitter/dexGems/holdersTracker24h.js";
 
 schedule("0 7 * * *", async function cron_coingeckoTrending() {
   try {
@@ -663,8 +664,8 @@ schedule("0 17 * * *", async function cron_dexGems_holders() {
     console.log("Error at cron_dexGems_holders: " + err.message);
   }
 });
-/*
-schedule("30 17 * * *", async function cron_dexGems_holdersCountGainers24h() {
+
+schedule("30 17 * * *", async function cron_dexGems_holdersCountChange24h() {
   try {
     //get yesterday's dexgems
     const today = new Date();
@@ -682,17 +683,17 @@ schedule("30 17 * * *", async function cron_dexGems_holdersCountGainers24h() {
       const holdersCountOld = token.holdersCount;
       const tokenInfo = await getTokenInfo(token.id);
       const holdersCountNew = tokenInfo.data.holdersCount;
-      const holdersCountChangePct24h = (holdersCountNew / holdersCountOld - 1) * 100;
+      const holdersCountChangePct24h =
+        (holdersCountNew / holdersCountOld - 1) * 100;
       token.holdersCountChangePct24h = holdersCountChangePct24h;
       mappedHoldersCountChange.push(token);
     }
 
-    const sortedByHoldersCount = mappedHoldersCountChange
-      .sort((a, b) => {
-        if (a.holdersCountChangePct24h > b.holdersCountChangePct24h) return -1;
-        if (a.holdersCountChangePct24h < b.holdersCountChangePct24h) return 1;
-        if (a.holdersCountChangePct24h === b.holdersCountChangePct24h) return 0;
-      });
+    const sortedByHoldersCount = mappedHoldersCountChange.sort((a, b) => {
+      if (a.holdersCountChangePct24h > b.holdersCountChangePct24h) return -1;
+      if (a.holdersCountChangePct24h < b.holdersCountChangePct24h) return 1;
+      if (a.holdersCountChangePct24h === b.holdersCountChangePct24h) return 0;
+    });
 
     //stop process if there are no results
     if (sortedByHoldersCount.length === 0) return;
@@ -701,17 +702,19 @@ schedule("30 17 * * *", async function cron_dexGems_holdersCountGainers24h() {
       return {
         symbol: token.symbol,
         name: token.name,
-        holdersCountChangePct24h: token.holdersCountChangePct24h,
+        holdersCountChangePct24h:
+          Math.round((token.holdersCountChangePct24h + Number.EPSILON) * 100) /
+          100,
       };
     });
     //tweet data
-    //await tweetDexGemsGainers24h(dataForTweet, dexGems.length);
+    await tweetHoldersCountChange24h(dataForTweet, dexGems.length);
     console.log(dataForTweet);
-    console.log("successfully tweeted holders gainers 24h");
+    console.log("successfully tweeted holders count change 24h");
   } catch (err) {
-    console.log("Error at cron_dexGems_gainers24h: " + err.message);
+    console.log("Error at cron_dexGems_holdersCountChange24h: " + err.message);
   }
-}); */
+});
 
 schedule("0 18 * * *", async function cron_dexGems_gainers24h() {
   try {
