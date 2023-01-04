@@ -5,19 +5,17 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const dateFormat = 'dd/MM/yyyy';
-const today = format( new Date(), dateFormat );
+const dateFormat = "MM/dd/yyyy";
+const today = format(new Date(), dateFormat);
 
-const BasicDatePicker = () => {
-  const [value, setValue] = React.useState(today);
-
+const BasicDatePicker = (props) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="Basic example"
-        value={value}
+        value={props.date ? props.date : today}
         onChange={(newValue) => {
-          setValue(newValue);
+          props.setDate(newValue);
         }}
         renderInput={(params) => <TextField {...params} />}
       />

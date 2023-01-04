@@ -10,11 +10,14 @@ const RawDataTable = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [selectedRowData, setSelectedRowData] = React.useState([]);
+  //date picker
+  const [date, setDate] = React.useState(new Date())
   const token = useSelector((state) => state.token);
 
   const getData = async () => {
     try {
       setLoading(true);
+      console.log(date)
       const response = await fetch("/dexGems/latest", {
         method: "GET",
         headers: {
@@ -32,7 +35,6 @@ const RawDataTable = () => {
       let data = await response.json();
       setData(data);
       setError(null);
-      console.log(data);
     } catch (err) {
       setError(err.message);
       setData(null);
@@ -89,7 +91,7 @@ const RawDataTable = () => {
 
   React.useEffect(() => {
     getData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [date]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>
@@ -98,9 +100,9 @@ const RawDataTable = () => {
           <CircularProgress />
         </Box>
       )}
-      {data && (
+      {!loading && data && (
         <div>
-          <BasicDatePicker />
+          <BasicDatePicker date={date} setDate={setDate}/>
           <DataTable
             rows={getRows()}
             columns={columns}

@@ -32,6 +32,16 @@ export const dexGems_getLatestDexGems = async (req, res) => {
   }
 };
 
+export const dexGems_getDexGemsByDate = async (req, res) => {
+  try {
+    console.log(req.params.date);
+    res.status(200).json({ ok: "cool" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(404).json({ message: err.message });
+  }
+};
+
 /* DELETE */
 export const dexGems_deleteTokenById = async (req, res) => {
   try {
