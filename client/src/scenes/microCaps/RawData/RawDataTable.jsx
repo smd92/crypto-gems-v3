@@ -1,9 +1,13 @@
 import React from "react";
 import { Box, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
+import { format } from "date-fns";
 import DataTable from "components/DataTable";
 import RawDataModal from "./RawDataModal";
 import BasicDatePicker from "components/BasicDatePicker";
+
+const dateFormat = "MM/dd/yyyy";
+const today = format(new Date(), dateFormat);
 
 const RawDataTable = () => {
   const [data, setData] = React.useState(null);
@@ -11,20 +15,22 @@ const RawDataTable = () => {
   const [error, setError] = React.useState(null);
   const [selectedRowData, setSelectedRowData] = React.useState([]);
   //date picker
-  const [date, setDate] = React.useState(new Date())
+  const [date, setDate] = React.useState(today);
   const token = useSelector((state) => state.token);
 
   const getData = async () => {
     try {
       setLoading(true);
-      console.log(date)
-      const response = await fetch("/dexGems/latest", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/dexGems/date/${date.replaceAll("/", "-")}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(
@@ -102,7 +108,11 @@ const RawDataTable = () => {
       )}
       {!loading && data && (
         <div>
-          <BasicDatePicker date={date} setDate={setDate}/>
+          <BasicDatePicker
+            date={date}
+            setDate={setDate}
+            dateFormat={dateFormat}
+          />
           <DataTable
             rows={getRows()}
             columns={columns}

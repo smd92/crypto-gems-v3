@@ -34,8 +34,15 @@ export const dexGems_getLatestDexGems = async (req, res) => {
 
 export const dexGems_getDexGemsByDate = async (req, res) => {
   try {
-    console.log(req.params.date);
-    res.status(200).json({ ok: "cool" });
+    const date = new Date(req.params.date);
+    const data = await getDexGemsByDate(date);
+    if (data.length === 1) {
+      const dexGems = data[0].dexGems;
+      const mappedPriceChange = await getPriceChange(dexGems);
+      res.status(200).json(mappedPriceChange);
+    } else {
+      res.status(200).json(data);
+    }
   } catch (err) {
     console.log(err.message);
     res.status(404).json({ message: err.message });
