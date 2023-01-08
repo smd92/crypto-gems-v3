@@ -6,6 +6,7 @@ import {
   deleteDexGemsResearchById,
 } from "../db/dexGemsResearch.js";
 import { check, validationResult } from "express-validator";
+import { getPriceChange } from "../functions/cryptoData/dexGems/priceChange.js";
 
 /* CREATE */
 export const dexGemsResearch_createDexGemsResearch = async (req, res) => {
@@ -15,8 +16,10 @@ export const dexGemsResearch_createDexGemsResearch = async (req, res) => {
 
     await check("dexToolsURL").trim().isURL().run(req);
     await check("symbol").trim().isString().run(req);
+    await check("pairAdress").trim().isString().run(req);
     await check("tokenAdress").trim().isString().run(req);
     await check("marketCapUSD").toInt().isInt().run(req);
+    await check("priceUSD").toFloat().isFloat().run(req);
     await check("buyTaxPct").toFloat().isFloat().run(req);
     await check("sellTaxPct").toFloat().isFloat().run(req);
     await check("dextScore").toInt().isInt().run(req);
@@ -49,6 +52,10 @@ export const dexGemsResearch_createDexGemsResearch = async (req, res) => {
 export const dexGemsResearch_getDexGemsResearch = async (req, res) => {
   try {
     const data = await getDexGemsResearch();
+    //map price change
+    const dexGems = data.map((obj) => obj.researchData);
+    const mappedPriceChange = await getPriceChange(dexGems);
+    data.researchData = mappedPriceChange;
     res.status(200).json(data);
   } catch (err) {
     console.log(err.message);
@@ -76,7 +83,9 @@ export const dexGemsResearch_updateDexGemsResearchById = async (req, res) => {
     await check("symbol").trim().isString().run(req);
     await check("name").trim().isString().run(req);
     await check("tokenAdress").trim().isString().run(req);
+    await check("pairAdress").trim().isString().run(req);
     await check("marketCapUSD").toInt().isInt().run(req);
+    await check("priceUSD").toFloat().isFloat().run(req);
     await check("buyTaxPct").toInt().isInt().run(req);
     await check("sellTaxPct").toInt().isInt().run(req);
     await check("dextScore").toInt().isInt().run(req);

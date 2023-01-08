@@ -23,6 +23,7 @@ import { getTotalSupply } from "./functions/cryptoData/apis/etherscan.js";
 import { getPriceChange } from "./functions/cryptoData/dexGems/priceChange.js";
 import { getPerformance7d } from "./functions/cryptoData/gems/getPricePerformance.js";
 import { getTokenInfo } from "./functions/cryptoData/apis/ethplorer.js";
+import { getHoldersCountChange } from "./functions/cryptoData/dexGems/holdersCountChange.js";
 /* DB */
 import { coingeckoTrending24hCreate } from "./db/coingeckoTrending24h.js";
 import { getSavedGemsDaysAgo, gemsCreate, getGemsByDate } from "./db/gems.js";
@@ -676,29 +677,12 @@ schedule("30 17 * * *", async function cron_dexGems_holdersCountChange24h() {
       document.dexGems.forEach((dexGem) => dexGems.push(dexGem));
     });
 
-    const mappedHoldersCountChange = [];
-
-    for (let i = 0; i < dexGems.length; i++) {
-      const token = dexGems[i];
-      const holdersCountOld = token.holdersCount;
-      const tokenInfo = await getTokenInfo(token.id);
-      const holdersCountNew = tokenInfo.data.holdersCount;
-      const holdersCountChangePct24h =
-        (holdersCountNew / holdersCountOld - 1) * 100;
-      token.holdersCountChangePct24h = holdersCountChangePct24h;
-      mappedHoldersCountChange.push(token);
-    }
-
-    const sortedByHoldersCount = mappedHoldersCountChange.sort((a, b) => {
-      if (a.holdersCountChangePct24h > b.holdersCountChangePct24h) return -1;
-      if (a.holdersCountChangePct24h < b.holdersCountChangePct24h) return 1;
-      if (a.holdersCountChangePct24h === b.holdersCountChangePct24h) return 0;
-    });
+    const mappedHoldersCountChange = await getHoldersCountChange(dexGems);
 
     //stop process if there are no results
-    if (sortedByHoldersCount.length === 0) return;
+    if (mappedHoldersCountChange.length === 0) return;
     //format data for tweet
-    const dataForTweet = sortedByHoldersCount.map((token) => {
+    const dataForTweet = mappedHoldersCountChange.map((token) => {
       return {
         symbol: token.symbol,
         name: token.name,

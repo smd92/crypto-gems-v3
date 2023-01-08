@@ -7,8 +7,10 @@ const researchSchema = yup.object().shape({
   dexToolsURL: yup.string().url().required("required"),
   symbol: yup.string().uppercase().required("required"),
   name: yup.string().required("required"),
+  pairAdress: yup.string().required("required"),
   tokenAdress: yup.string().required("required"),
   marketCapUSD: yup.number().min(0).required("required"),
+  priceUSD: yup.number().min(0).required("required"),
   buyTaxPct: yup.number().min(0).max(100).required("required"),
   sellTaxPct: yup.number().min(0).max(100).required("required"),
   dextScore: yup.number().min(0).max(99).integer().required("required"),
@@ -30,8 +32,10 @@ const initialValues = {
   dexToolsURL: "",
   symbol: "",
   name: "",
+  pairAdress: "",
   tokenAdress: "",
   marketCapUSD: "",
+  priceUSD: "",
   buyTaxPct: "",
   sellTaxPct: "",
   dextScore: "",
@@ -114,6 +118,16 @@ const ResearchForm = (props) => {
               sx={{ gridColumn: "span 2" }}
             />
             <TextField
+              label="Pair Address"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.pairAdress}
+              name="pairAdress"
+              error={Boolean(touched.pairAdress) && Boolean(errors.pairAdress)}
+              helperText={touched.pairAdress && errors.pairAdress}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
               label="Token Address"
               onBlur={handleBlur}
               onChange={handleChange}
@@ -135,6 +149,16 @@ const ResearchForm = (props) => {
                 Boolean(touched.marketCapUSD) && Boolean(errors.marketCapUSD)
               }
               helperText={touched.marketCapUSD && errors.marketCapUSD}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              label="Price USD"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.priceUSD}
+              name="priceUSD"
+              error={Boolean(touched.priceUSD) && Boolean(errors.priceUSD)}
+              helperText={touched.priceUSD && errors.priceUSD}
               sx={{ gridColumn: "span 2" }}
             />
             <TextField

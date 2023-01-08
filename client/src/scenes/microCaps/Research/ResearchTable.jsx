@@ -158,6 +158,7 @@ const ResearchTable = () => {
     { field: "isBuy", headerName: "Is Buy?", width: 70 },
     { field: "dateAdded", headerName: "Date Added", width: 150 },
     { field: "isTweeted", headerName: "Is Tweeted?", width: 90 },
+    { field: "priceChangePct", headerName: "Price Change %", width: 150 },
   ];
 
   const getRows = () => {
@@ -171,6 +172,7 @@ const ResearchTable = () => {
         isBuy: obj.researchData.isBuy,
         dateAdded: new Date(obj.createdAt),
         isTweeted: obj.isTweeted,
+        priceChangePct: obj.researchData.priceChangePct,
       };
     });
     return rows;
@@ -187,7 +189,7 @@ const ResearchTable = () => {
           rows={getRows()}
           columns={columns}
           setSelectedRowData={setSelectedRowData}
-          width="50%"
+          width="70%"
         />
         {/* BUTTONS FOR DB OPERATIONS */}
         {selectedRowData.length === 0 && (
