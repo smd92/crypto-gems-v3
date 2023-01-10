@@ -1,4 +1,5 @@
 import React from "react";
+import { Box, Typography} from "@mui/material";
 import { useSelector } from "react-redux";
 import DataTable from "components/DataTable";
 import ResearchModal from "scenes/microCaps/Research/ResearchModal";
@@ -206,6 +207,7 @@ const ResearchTable = () => {
           <ResearchModal
             dbOperation={"deleteData"}
             handleOperation={deleteData}
+            selectedRowData={selectedRowData}
           />
         )}
         {selectedRowData.length === 1 &&
@@ -215,6 +217,10 @@ const ResearchTable = () => {
               handleOperation={tweetData}
             />
           )}
+          <Box>
+            <Typography>Total Price Change %:</Typography>
+            <Typography>{data.map((obj) => obj.researchData.priceChangePct).reduce((a, b) => a + b)}</Typography>
+          </Box>
       </div>
     )
   );

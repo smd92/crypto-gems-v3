@@ -66,6 +66,7 @@ const ResearchModal = (props) => {
           {isDelete && (
             <>
               <Typography>Do you really want to delete this data?</Typography>
+              {props.selectedRowData.map((row) => <Typography>{row.symbol}</Typography>)}
               <DeleteButton
                 onClick={() => {
                   props.handleOperation();

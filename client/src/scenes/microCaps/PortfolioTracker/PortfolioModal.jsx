@@ -63,6 +63,7 @@ const PortfolioModal = (props) => {
           {isDelete && (
             <>
               <Typography>Do you really want to delete this data?</Typography>
+              {props.selectedRowData.map((row) => <Typography>{row.tokenSymbol}</Typography>)}
               <DeleteButton
                 onClick={() => {
                   props.handleOperation();

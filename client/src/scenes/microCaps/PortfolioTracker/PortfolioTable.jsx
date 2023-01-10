@@ -204,6 +204,7 @@ const PortfolioTable = () => {
             <PortfolioModal
               dbOperation={"deleteData"}
               handleOperation={deleteData}
+              selectedRowData={selectedRowData}
             />
           )}
         </div>

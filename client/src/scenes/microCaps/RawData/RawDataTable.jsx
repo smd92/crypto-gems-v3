@@ -123,6 +123,7 @@ const RawDataTable = () => {
             <RawDataModal
               dbOperation={"deleteData"}
               handleOperation={deleteData}
+              selectedRowData={selectedRowData}
             />
           )}
         </div>
